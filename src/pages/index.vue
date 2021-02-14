@@ -48,22 +48,7 @@
         </q-toolbar>
       </div>
     </q-header>
-    <q-parallax height="750">
-      <div class="area">
-        <ul class="circles">
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-        </ul>
-      </div>
-    </q-parallax>
+    <background-display></background-display>
 
     <q-page-container style="padding-top: 0">
       <div class="context">
@@ -159,6 +144,7 @@
 </template>
 
 <script>
+
 </script>
 
 <style>
