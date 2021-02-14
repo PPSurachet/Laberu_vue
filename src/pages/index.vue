@@ -10,18 +10,45 @@
             </q-toolbar-title>
           </q-btn>
           <q-space />
+          <div class="user">
+            <div class="text-h6 text-center navUsername">labelru@gmail.com</div>
+          </div>
           <q-btn
             flat
             round
             dense
-            icon="search"
-            class="q-mr-xs text-blue-grey-7"
-          />
-          <q-btn flat round dense icon="group_add" class="text-blue-grey-7" />
+            icon="account_circle"
+            class="text-blue-grey-7"
+            size="20px"
+          >
+            <q-menu touch-position>
+              <q-list style="min-width: 100px">
+                <q-item v-close-popup>
+                  <q-btn
+                    color="amber"
+                    label="HISTORY"
+                    push
+                    @click="$router.push('/history')"
+                    size="md"
+                    v-close-popup
+                  />
+                </q-item>
+                <q-item v-close-popup>
+                  <q-btn
+                    color="red"
+                    label="Logout"
+                    push
+                    size="md"
+                    v-close-popup
+                  />
+                </q-item>
+              </q-list>
+            </q-menu>
+          </q-btn>
         </q-toolbar>
       </div>
     </q-header>
-    <q-parallax height="720">
+    <q-parallax height="750">
       <div class="area">
         <ul class="circles">
           <li></li>
@@ -47,7 +74,7 @@
                 <div class="row">
                   <div class="col">
                     <div class="imgNumber text-left" style="text-right">
-                      Image#99
+                      Image#01
                     </div>
                   </div>
                   <div class="col text-right">
@@ -62,7 +89,7 @@
               </q-card-section>
 
               <q-card-section>
-                                <div class="q-pa-md">
+                <div class="q-pa-md">
                   <img
                     src="../images/image_1.jpg"
                     alt=""
@@ -93,7 +120,8 @@
                   <q-input
                     class="textDescribe"
                     filled
-                    type="textarea" placeholder="โปรดใส่คำอธิบายรูปภาพ"
+                    type="textarea"
+                    placeholder="โปรดใส่คำอธิบายรูปภาพ"
                   />
                 </div>
 
@@ -102,7 +130,7 @@
                 </div>
               </q-card-actions>
             </q-card>
-            <q-card class="cardProfile" style="left: 15%">
+            <!-- <q-card class="cardProfile" style="left: 15%">
               <q-card-section>
                 <div class="text-h6 text-center"><b>Profile</b></div>
               </q-card-section>
@@ -122,7 +150,7 @@
                   </div>
                 </div>
               </q-card-actions>
-            </q-card>
+            </q-card> -->
           </div>
         </div>
       </div>
@@ -131,12 +159,12 @@
 </template>
 
 <script>
-
-export default {
-}
 </script>
 
 <style>
+.navUsername {
+  color: black;
+}
 .imgNumber {
   padding: 5px 0 0 15px;
   font-weight: bold;
@@ -174,6 +202,7 @@ export default {
 .cardProfile {
   margin: 30px 0 0 0;
   width: 500px;
+  height: 200px;
   border-radius: 10px;
 }
 
@@ -434,5 +463,4 @@ export default {
   border-radius: 3px;
   transform: rotate(-90deg);
 }
-
 </style>
