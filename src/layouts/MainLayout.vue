@@ -42,22 +42,8 @@
         </q-toolbar>
       </div>
     </q-header>
-    <q-parallax height="720">
-      <div class="area">
-        <ul class="circles">
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-        </ul>
-      </div>
-    </q-parallax>
+    <backgroundDisplay>
+    </backgroundDisplay>
 
     <q-page-container style="padding-top: 0">
       <div class="context">
@@ -69,105 +55,7 @@
                 <div class="text-subtitle2">by LABERU</div>
               </div>
               <div class="q-pa-md">
-                <div class="q-col-gutter-md q-mt-sm row items-center">
-                  <div class="col">
-                    <q-img
-                      src="imgSet"
-                      width="100%"
-                      height="180px"
-                    />
-                  </div>
-                </div>
-                <!-- <div class="q-col-gutter-md q-mt-sm row items-center ">
-                  <div class="col">
-                    <q-img
-                      animaiton="fadeInDown"
-                      src="../images/right1.jpg"
-                      width="100%"
-                      height="180px"
-                    />
-                  </div>
-                  <div class="col">
-                    <q-img
-                      animaiton="fadeInDown"
-                      src="../images/hight.jpg"
-                      width="100%"
-                      height="200px"
-                    />
-                  </div>
-                  <div class="col">
-                    <q-img
-                      animaiton="fadeInDown"
-                      src="../images/hight.jpg"
-                      width="100%"
-                      height="225px"
-                    />
-                  </div>
-                  <div class="col">
-                    <q-img
-                      animation="fadeInDown"
-                      src="../images/right3.jpg"
-                      width="100%"
-                      height="250px"
-                    />
-                  </div>
-                  <div class="col">
-                    <q-img
-                      animation="fadeInDown"
-                      src="../images/right2.jpg"
-                      width="100%"
-                      height="275px"
-                    />
-                  </div>
-                  <div class="col">
-                    <q-img
-                      animation="fadeInDown"
-                      src="../images/right3.jpg"
-                      width="100%"
-                      height="300px"
-                    />
-                  </div>
-                  <div class="col">
-                    <q-img
-                      animation="fadeInDown"
-                      src="../images/right1.jpg"
-                      width="100%"
-                      height="275px"
-                    />
-                  </div>
-                  <div class="col">
-                    <q-img
-                      animation="fadeInDown"
-                      src="../images/right3.jpg"
-                      width="100%"
-                      height="250px"
-                    />
-                  </div>
-                  <div class="col">
-                    <q-img
-                      animation="fadeInDown"
-                      src="../images/right2.jpg"
-                      width="100%"
-                      height="225px"
-                    />
-                  </div>
-                  <div class="col">
-                    <q-img
-                      animaiton="fadeInDown"
-                      src="../images/hight.jpg"
-                      width="100%"
-                      height="200px"
-                    />
-                  </div>
-                  <div class="col">
-                    <q-img
-                      animaiton="fadeInDown"
-                      src="../images/right1.jpg"
-                      width="100%"
-                      height="180px"
-                    />
-                  </div>
-                </div> -->
+                <imageDisplay></imageDisplay>
                 <div class="q-col-gutter-md row items-start q-mt-xs"></div>
               </div>
             </q-card-section>
@@ -233,9 +121,13 @@
 </template>
 
 <script>
-
+import backgroundDisplay from '../components/login_animation'
+import imageDisplay from '../components/login_image'
 export default {
-
+  components: {
+    backgroundDisplay,
+    imageDisplay,
+  }
 }
 </script>
 
@@ -275,125 +167,8 @@ export default {
   top: 10rem;
 }
 
-.area {
-  background: #e6e8ea;
-  background: -webkit-linear-gradient(to left, #8f94fb, #4e54c8);
-  width: 100%;
-  height: 100vh;
-}
-
-.circles {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-
-.circles li {
-  position: absolute;
-  display: block;
-  list-style: none;
-  width: 20px;
-  height: 20px;
-  background: rgba(94, 51, 51, 0.24);
-  animation: animate 25s linear infinite;
-  bottom: -150px;
-}
-
-.circles li:nth-child(1) {
-  left: 25%;
-  width: 80px;
-  height: 80px;
-  animation-delay: 0s;
-}
-
-.circles li:nth-child(2) {
-  left: 10%;
-  width: 20px;
-  height: 20px;
-  animation-delay: 2s;
-  animation-duration: 12s;
-}
-
-.circles li:nth-child(3) {
-  left: 70%;
-  width: 20px;
-  height: 20px;
-  animation-delay: 4s;
-}
-
-.circles li:nth-child(4) {
-  left: 40%;
-  width: 60px;
-  height: 60px;
-  animation-delay: 0s;
-  animation-duration: 18s;
-}
-
-.circles li:nth-child(5) {
-  left: 65%;
-  width: 20px;
-  height: 20px;
-  animation-delay: 0s;
-}
-
-.circles li:nth-child(6) {
-  left: 75%;
-  width: 110px;
-  height: 110px;
-  animation-delay: 3s;
-}
-
-.circles li:nth-child(7) {
-  left: 35%;
-  width: 150px;
-  height: 150px;
-  animation-delay: 7s;
-}
-
-.circles li:nth-child(8) {
-  left: 50%;
-  width: 25px;
-  height: 25px;
-  animation-delay: 15s;
-  animation-duration: 45s;
-}
-
-.circles li:nth-child(9) {
-  left: 20%;
-  width: 15px;
-  height: 15px;
-  animation-delay: 2s;
-  animation-duration: 35s;
-}
-
-.circles li:nth-child(10) {
-  left: 85%;
-  width: 150px;
-  height: 150px;
-  animation-delay: 0s;
-  animation-duration: 11s;
-}
-
-@keyframes animate {
-  0% {
-    transform: translateY(0) rotate(0deg);
-    opacity: 1;
-    border-radius: 0;
-  }
-
-  100% {
-    transform: translateY(-1000px) rotate(720deg);
-    opacity: 0;
-    border-radius: 50%;
-  }
-}
-
 .iconic {
   /* Group 65 */
-
   position: absolute;
   width: 30px;
   height: 30px;
