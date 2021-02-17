@@ -116,7 +116,7 @@
                           <q-separator />
 
                           <q-card-actions align="right">
-                            <q-btn 
+                            <q-btn
                               v-close-popup
                               flat
                               color="primary"
@@ -128,9 +128,7 @@
                     </div>
                   </q-item>
 
-
-
-                  <q-item> 
+                  <q-item>
                     <q-item-section thumbnail direction="right">
                       <img src="https://cdn.quasar.dev/img/mountains.jpg" />
                     </q-item-section>
@@ -149,13 +147,13 @@
                         transition-show="flip-down"
                         transition-hide="flip-up"
                       >
-                        <q-card class="bg-primary text-white">
-                          <q-bar>
+                        <q-card class="bg-white text-grey">
+                          <q-bar class="bg-white">
                             <q-space />
                             <q-btn dense flat icon="close" v-close-popup>
-                              <q-tooltip content-class="bg-white text-primary"
-                                >Close</q-tooltip
-                              >
+                              <q-tooltip content-class="bg-white text-primary">
+                                Close
+                              </q-tooltip>
                             </q-btn>
                           </q-bar>
                           <q-img
@@ -163,70 +161,18 @@
                             style="width:100%"
                           />
 
-                          <q-card-section>
-                            <div class="text-h6">
-                              Alert
+                          <q-card-section class="text-h6">
+                            <div class="text-subtitle1">
+                              $・Italian, Cafe
                             </div>
-                          </q-card-section>
-
-                          <q-card-section class="q-pt-none">
-                            {{ lorem }}
+                            <div class="text-caption text-grey">
+                              {{ lorem }}
+                            </div>
                           </q-card-section>
                         </q-card>
                       </q-dialog>
                     </div>
                   </q-item>
-
-                  <!-- <div class="row justify-center q-mt-md">
-                        <q-pagination
-                          v-model="pagination.page"
-                          color="grey-8"
-                          :max="pagesNumber"
-                          size="sm"
-                        />
-                      </div> -->
-
-                  <!-- <div class="q-pa-md q-gutter-sm">
-                    
-                    <q-btn
-                      label="See"
-                      color="primary"
-                      @click="bar2 = true"
-                    />
-
-                    <q-dialog
-                      v-model="bar2"
-                      persistent
-                      transition-show="flip-down"
-                      transition-hide="flip-up"
-                    >
-                      <q-card class="bg-primary text-white">
-                        <q-bar>
-                          <q-icon name="network_wifi" />
-                          <q-icon name="network_cell" />
-                          <q-icon name="battery_full" />
-
-                          <q-space />
-
-                          <q-btn dense flat icon="close" v-close-popup>
-                            <q-tooltip content-class="bg-white text-primary"
-                              >Close</q-tooltip
-                            >
-                          </q-btn>
-                        </q-bar>
-                        <q-img src="https://cdn.quasar.dev/img/mountains.jpg" style="width:100%"/>
-
-                        <q-card-section>
-                          <div class="text-h6">Alert</div>
-                        </q-card-section>
-
-                        <q-card-section class="q-pt-none"
-                          >{{ lorem }}
-                          labore.
-                        </q-card-section>
-                      </q-card>
-                    </q-dialog>
-                  </div> -->
                 </q-list>
 
                 <!-- <div class="q-pa-lg flex flex-center">
