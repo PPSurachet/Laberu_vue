@@ -68,121 +68,13 @@
     <q-page-container style="padding-top:0">
       <div class="context">
         <div class="row justify-around flex">
-          <q-card flat bordered class="my-card" style="width:500px">
+          <q-card bordered class="my-card" style="width:500px">
             <q-card-section>
               <div class="text-h5 text-center">HISTORY</div>
             </q-card-section>
             <q-card-section>
               <div class="q-pa-md drop">
                 <q-list>
-                  <q-item>
-                    <q-item-section thumbnail direction="right">
-                      <img src="https://cdn.quasar.dev/img/mountains.jpg" />
-                    </q-item-section>
-                    <q-item-section>List item</q-item-section>
-
-                    <div class="q-pa-md q-gutter-sm">
-                      <q-btn
-                        label="more"
-                        color="primary"
-                        @click="card = true"
-                      />
-                      <q-dialog v-model="card">
-                        <q-card class="my-card">
-                          <q-img
-                            src="https://cdn.quasar.dev/img/mountains.jpg"
-                          />
-
-                          <q-card-section>
-                            <div class="row no-wrap items-center">
-                              <div class="col text-h6 ellipsis">
-                                Cafe Basilico
-                              </div>
-                              <div
-                                class="col-auto text-grey text-caption q-pt-md row no-wrap items-center"
-                              ></div>
-                            </div>
-                          </q-card-section>
-
-                          <q-card-section class="q-pt-none">
-                            <div class="text-subtitle1">
-                              $・Italian, Cafe
-                            </div>
-                            <div class="text-caption text-grey">
-                              Small plates, salads & sandwiches in an intimate
-                              setting.
-                            </div>
-                          </q-card-section>
-
-                          <q-separator />
-
-                          <q-card-actions align="right">
-                            <q-btn
-                              v-close-popup
-                              flat
-                              color="primary"
-                              label="Close"
-                            />
-                          </q-card-actions>
-                        </q-card>
-                      </q-dialog>
-                    </div>
-                  </q-item>
-
-                  <q-item>
-                    <q-item-section thumbnail direction="right">
-                      <img src="https://cdn.quasar.dev/img/mountains.jpg" />
-                    </q-item-section>
-                    <q-item-section>List item</q-item-section>
-
-                    <div class="q-pa-md q-gutter-sm">
-                      <q-btn
-                        label="more"
-                        color="primary"
-                        @click="card = true"
-                      />
-                      <q-dialog v-model="card">
-                        <q-card class="my-card">
-                          <q-img
-                            src="https://cdn.quasar.dev/img/mountains.jpg"
-                          />
-
-                          <q-card-section>
-                            <div class="row no-wrap items-center">
-                              <div class="col text-h6 ellipsis">
-                                Cafe Basilico
-                              </div>
-                              <div
-                                class="col-auto text-grey text-caption q-pt-md row no-wrap items-center"
-                              ></div>
-                            </div>
-                          </q-card-section>
-
-                          <q-card-section class="q-pt-none">
-                            <div class="text-subtitle1">
-                              $・Italian, Cafe
-                            </div>
-                            <div class="text-caption text-grey">
-                              Small plates, salads & sandwiches in an intimate
-                              setting.
-                            </div>
-                          </q-card-section>
-
-                          <q-separator />
-
-                          <q-card-actions align="right">
-                            <q-btn
-                              v-close-popup
-                              flat
-                              color="primary"
-                              label="Close"
-                            />
-                          </q-card-actions>
-                        </q-card>
-                      </q-dialog>
-                    </div>
-                  </q-item>
-
                   <q-item>
                     <q-item-section thumbnail direction="right">
                       <img src="https://cdn.quasar.dev/img/mountains.jpg" />
@@ -224,7 +116,7 @@
                           <q-separator />
 
                           <q-card-actions align="right">
-                            <q-btn
+                            <q-btn 
                               v-close-popup
                               flat
                               color="primary"
@@ -233,21 +125,120 @@
                           </q-card-actions>
                         </q-card>
                       </q-dialog>
-                      <div class="row justify-center q-mt-md">
+                    </div>
+                  </q-item>
+
+
+
+                  <q-item> 
+                    <q-item-section thumbnail direction="right">
+                      <img src="https://cdn.quasar.dev/img/mountains.jpg" />
+                    </q-item-section>
+                    <q-item-section>List item</q-item-section>
+
+                    <div class="q-pa-md q-gutter-sm">
+                      <q-btn
+                        label="More"
+                        color="primary"
+                        @click="bar2 = true"
+                      />
+
+                      <q-dialog
+                        v-model="bar2"
+                        persistent
+                        transition-show="flip-down"
+                        transition-hide="flip-up"
+                      >
+                        <q-card class="bg-primary text-white">
+                          <q-bar>
+                            <q-space />
+                            <q-btn dense flat icon="close" v-close-popup>
+                              <q-tooltip content-class="bg-white text-primary"
+                                >Close</q-tooltip
+                              >
+                            </q-btn>
+                          </q-bar>
+                          <q-img
+                            src="https://cdn.quasar.dev/img/mountains.jpg"
+                            style="width:100%"
+                          />
+
+                          <q-card-section>
+                            <div class="text-h6">
+                              Alert
+                            </div>
+                          </q-card-section>
+
+                          <q-card-section class="q-pt-none">
+                            {{ lorem }}
+                          </q-card-section>
+                        </q-card>
+                      </q-dialog>
+                    </div>
+                  </q-item>
+
+                  <!-- <div class="row justify-center q-mt-md">
                         <q-pagination
                           v-model="pagination.page"
                           color="grey-8"
                           :max="pagesNumber"
                           size="sm"
                         />
-                      </div>
-                    </div>
-                  </q-item>
+                      </div> -->
+
+                  <!-- <div class="q-pa-md q-gutter-sm">
+                    
+                    <q-btn
+                      label="See"
+                      color="primary"
+                      @click="bar2 = true"
+                    />
+
+                    <q-dialog
+                      v-model="bar2"
+                      persistent
+                      transition-show="flip-down"
+                      transition-hide="flip-up"
+                    >
+                      <q-card class="bg-primary text-white">
+                        <q-bar>
+                          <q-icon name="network_wifi" />
+                          <q-icon name="network_cell" />
+                          <q-icon name="battery_full" />
+
+                          <q-space />
+
+                          <q-btn dense flat icon="close" v-close-popup>
+                            <q-tooltip content-class="bg-white text-primary"
+                              >Close</q-tooltip
+                            >
+                          </q-btn>
+                        </q-bar>
+                        <q-img src="https://cdn.quasar.dev/img/mountains.jpg" style="width:100%"/>
+
+                        <q-card-section>
+                          <div class="text-h6">Alert</div>
+                        </q-card-section>
+
+                        <q-card-section class="q-pt-none"
+                          >{{ lorem }}
+                          labore.
+                        </q-card-section>
+                      </q-card>
+                    </q-dialog>
+                  </div> -->
                 </q-list>
+
                 <!-- <div class="q-pa-lg flex flex-center">
-                  <q-pagination   v-model="current" :max="5" :input="true">
-                  </q-pagination>
-                </div> -->
+    <q-pagination
+      v-model="current"
+      color="grey-8"
+      :max="10"
+      :max-pages="6"
+      :boundary-numbers="true"
+    >
+    </q-pagination>
+  </div> -->
               </div>
             </q-card-section>
           </q-card>
@@ -259,47 +250,46 @@
 
 <script>
 export default {
-  data () {
+  data() {
     return {
-      text: '',
+      text: "",
       open: false,
+      bar2: false,
       card: false,
-      current: '',
+      current: "",
       lorem:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
       // dialog: false,
       // drawerLeft: false,
       // drawerRight: true
       pagination: {
-        sortBy: 'desc',
+        sortBy: "desc",
         descending: false,
         page: 2,
         rowsPerPage: 3
         // rowsNumber: xx if getting data from a server
       }
-    }
+    };
   },
   methods: {
-    onClick () {
+    onClick() {
       // console.log('Clicked on a fab action')
     },
-    toggleFab () {
-      this.open = !this.open
+    toggleFab() {
+      this.open = !this.open;
     },
-    pagesNumber () {
-      return Math.ceil(this.rows.length / this.pagination.rowsPerPage)
+    pagesNumber() {
+      return Math.ceil(this.rows.length / this.pagination.rowsPerPage);
     }
   }
-}
-
+};
 </script>
 
 <style>
-
-.navUsername{
-    color: black;
+.navUsername {
+  color: black;
 }
-/* ยังไม่ได้ใส่ style ของรูป */
+
 .toolbarT {
   height: 80px;
   background: #f8f8f8;
