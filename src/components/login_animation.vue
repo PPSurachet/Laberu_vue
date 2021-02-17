@@ -1,8 +1,8 @@
 <template>
-    <div>
-        <q-parallax height="720">
+    <div style="padding-top:20px">
+        <q-parallax height="755">
             <div class="area">
-                <ul class="circles">
+                <ul class="circles" >
                     <li></li>
                     <li></li>
                     <li></li>
@@ -13,6 +13,7 @@
                     <li></li>
                     <li></li>
                     <li></li>
+                    
                 </ul>
             </div>
         </q-parallax>

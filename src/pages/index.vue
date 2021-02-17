@@ -52,9 +52,9 @@
 
     <q-page-container style="padding-top: 0">
       <div class="context">
-        <div class="row justify-around">
+        <div class="row items-center">
           <div class="col-md-6" style="padding: 0 0 0 80px">
-            <q-card class="cardIMG" >
+            <q-card class="cardIMG ">
               <q-card-section>
                 <div class="row">
                   <div class="col">
@@ -89,7 +89,7 @@
               </q-card-section>
             </q-card>
           </div>
-          <div class="col-md-6" style="padding: 0 0 0 120px" >
+          <div class="col-md-6" style="padding: 0 0 0 120px">
             <q-card class="cardText">
               <q-card-section>
                 <div class="text-h6 text-center">
@@ -144,6 +144,13 @@
 </template>
 
 <script>
+
+import backgroundDisplay from '../components/login_animation'
+export default {
+  components: {
+    backgroundDisplay,
+  }
+}
 
 </script>
 
@@ -214,7 +221,7 @@
   height: 90%;
 }
 .btnColor {
-  width: 90%;
+  width: 100%;
   background-color: #6bce2e;
   color: white;
 }
