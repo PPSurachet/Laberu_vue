@@ -53,8 +53,8 @@
     <q-page-container style="padding-top: 0">
       <div class="context">
         <div class="row justify-around">
-          <div class="col-md-6">
-            <q-card class="cardIMG" style="left: 20%">
+          <div class="col-md-6" style="padding: 0 0 0 80px">
+            <q-card class="cardIMG" >
               <q-card-section>
                 <div class="row">
                   <div class="col">
@@ -89,8 +89,8 @@
               </q-card-section>
             </q-card>
           </div>
-          <div class="col-md-6">
-            <q-card class="cardText" style="left: 15%">
+          <div class="col-md-6" style="padding: 0 0 0 120px" >
+            <q-card class="cardText">
               <q-card-section>
                 <div class="text-h6 text-center">
                   <b>Describe the Image</b>
