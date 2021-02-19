@@ -67,12 +67,12 @@
                   ลงชื่อเข้าใช้
                 </div>
                 <q-form>
-                  <q-input square clearable type="email" label="Email">
+                  <q-input square clearable type="email" label="Email" id="email">
                     <template v-slot:prepend>
                       <q-icon name="email" />
                     </template>
                   </q-input>
-                  <q-input square clearable type="password" label="Password">
+                  <q-input square clearable type="password" label="Password" id="password">
                     <template v-slot:prepend>
                       <q-icon name="lock" />
                     </template>
