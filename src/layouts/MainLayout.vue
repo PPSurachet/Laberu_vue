@@ -108,7 +108,7 @@
                 </div>
                 <q-separator inset />
                 <div class="q-mt-lg q-gutter-sm" align="center">
-                  <q-btn flat color="primary" label="Create an account" />
+                  <q-btn flat color="primary" label="Create an account" @click="$router.push('/index')"/>
                 </div>
               </q-card-section>
               <q-card-section> </q-card-section>
