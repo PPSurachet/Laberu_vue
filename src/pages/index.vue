@@ -74,17 +74,17 @@
               </q-card-section>
 
               <q-card-section>
-                <div class="q-pa-md">
-                  <img
+                <div class="q-pa-md" style="text-align:center;">
+                  <div style="font-weight:bold;font-size:50px">{{ dataImage.shortcode }}</div>
+                  <!-- <q-img
                     src="../images/image_1.jpg"
                     alt=""
                     class="imgMain"
                     width="100%"
                     height="auto"
-                  />
+                  /> -->
                 </div>
                 <div class="imgID">
-                  Image ID : 00715AB
                 </div>
               </q-card-section>
             </q-card>
@@ -104,6 +104,7 @@
                 >
                   <q-input
                     class="textDescribe"
+                    v-model="taskSuccess.caption"
                     filled
                     type="textarea"
                     placeholder="โปรดใส่คำอธิบายรูปภาพ"
@@ -111,7 +112,7 @@
                 </div>
 
                 <div class="btnSave">
-                  <q-btn class="btnColor" label="SAVE" />
+                  <q-btn class="btnColor" label="SAVE" @click="onSave()" />
                 </div>
               </q-card-actions>
             </q-card>
@@ -144,7 +145,170 @@
 </template>
 
 <script>
+import { QSpinnerFacebook } from 'quasar';
+export default {
+  data(){
+    return {
+      user:{
+        _id:'6023a41eaf493f54ec7a856e',
+        name:null,
+      },
+      dataImage:{
+        _id:null,
+        shortcode:null,
+      },
+      taskImage:{
+        _id:null,
+        shortcode:null,
+        status:null,
+        process:null,
+      },
+      taskSuccess:{
+        _id:null,
+        shortcode:null,
+        caption:null,
+        time_start:null,
+        time_stop:null,
+        user_id:null,
+        task_id:null,
+      }
+    }
+  },
+  // created(){
+  //   window.addEventListener('onbeforeunload',this.resetStatus())
+  // },
+  // mounted(){
+  //   this.init();
+  // },
+  methods:{
+    async init(){
+      this.showLoading();
+      if(this.checkDone()){
+        await this.getImageByUser();
+        await this.updateStatusTask(true);
+        await this.setImageData();
+        if(this.insertNewRecord()){
+          this.onTimeout();
+        }
+      }else{
+        this.showMessage();
+      }
+    },
+    async checkDone() {
+      try {
+        const responseImage = await this.$axios.get('https://testlaberu3-uag2fgef3q-as.a.run.app/image-data/getCountImage')
+        const responseTaskImage = await this.$axios.get('https://testlaberu3-uag2fgef3q-as.a.run.app/task-image/getCountTaskSuccess')
+        if(responseTaskImage.data > responseImage){
+          return true;
+        }else{
+          return false;
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async getImageByUser(){
+      try {
+        const response = await this.$axios.get(`https://testlaberu3-uag2fgef3q-as.a.run.app/task-image/findImage/${this.user._id}`);
+        this.taskImage._id = response.data[0]._id;
+        this.taskImage.shortcode = response.data[0].shortcode;
+        this.taskImage.status = response.data[0].status;
+        this.taskImage.process = response.data[0].process;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async setImageData(){
+      try {
+        const response = await this.$axios.get(`https://testlaberu3-uag2fgef3q-as.a.run.app/image-data/${this.taskImage.shortcode}`);
+        this.dataImage._id = response.data[0]._id;
+        this.dataImage.shortcode = response.data[0].shortcode;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async updateStatusTask (inputStatus) {
+      try {
+        await this.$axios.put(`https://testlaberu3-uag2fgef3q-as.a.run.app/task-image/update_status/${this.taskImage._id}`,{
+          status:inputStatus
+        })
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async insertNewRecord(){
+      try {
+        const response = await this.$axios.post(`https://testlaberu3-uag2fgef3q-as.a.run.app/task-success/create`,{
+            shortcode:this.taskImage.shortcode,
+            caption:null,
+            time_start:null,
+            time_stop:null,
+            user_id: this.user._id,
+            task_id: this.taskImage._id,
+        })
 
+        this.taskSuccess._id = response.data._id;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async onSave() {
+      try {
+        await this.$axios.put(`https://testlaberu3-uag2fgef3q-as.a.run.app/task-success/updateOnSave/${this.taskSuccess._id}`,{
+            shortcode:this.taskImage.shortcode,
+            caption:this.taskSuccess.caption,
+            time_start:null,
+            time_stop:null,
+            user_id: this.user._id,
+            task_id: this.taskImage._id,
+        })
+
+        await this.updateStatusTask(false);
+        this.taskSuccess.caption = null;
+        this.init();
+
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    showLoading () {
+      this.$q.loading.show({
+        spinner: QSpinnerFacebook,
+        spinnerColor: 'yellow',
+        spinnerSize: 140,
+        backgroundColor: 'blue-8',
+      })
+    },
+    showMessage () {
+      this.$q.loading.show({
+        spinner: null,
+        spinnerColor: null,
+        spinnerSize: 0,
+        backgroundColor: 'blue-8',
+        message:'Enee ๆ ๆ ๆ ๆ ๆ ๆ'
+      })
+    },
+    onTimeout () {
+        this.timer = setTimeout(() => {
+        this.$q.loading.hide()
+        this.timer = void 0
+      }, 2000)
+    },
+    async resetStatus(){
+        await this.$axios.put(`https://testlaberu3-uag2fgef3q-as.a.run.app/task-image/update_status/${this.taskSuccess._id}`,{
+          status:false
+        })
+
+        await this.$axios.delete(`https://testlaberu3-uag2fgef3q-as.a.run.app/task-success/delete${this.taskSuccess._id}`)
+    }
+  },
+  beforeDestroy () {
+    if (this.timer !== void 0) {
+      clearTimeout(this.timer)
+      this.$q.loading.hide()
+    }
+  }
+}
 </script>
 
 <style>

@@ -1,4 +1,15 @@
 /* app global css */
+
+html, body{
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.parallax{
+  height: calc(50vw - 20vh);
+}
+
 .area {
   background: #e6e8ea;
   background: -webkit-linear-gradient(to left, #8f94fb, #4e54c8);

@@ -61,7 +61,7 @@ export default {
                 height:'180px',
             },
         ]
-        }
+        }   
     }
 }
 </script>

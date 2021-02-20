@@ -2,7 +2,7 @@
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
       <div class="text-white toolbarT">
-        <q-toolbar class="row full-height justify-center">
+        <q-toolbar class="row full-height justify-center fixed-bar">
           <q-btn flat>
             <q-icon name="img:../icons/icon.png" size="3rem" />
             <q-toolbar-title class="titleName"
@@ -42,10 +42,10 @@
         </q-toolbar>
       </div>
     </q-header>
-    <backgroundDisplay>
-    </backgroundDisplay>
 
-    <q-page-container style="padding-top: 0">
+    <backgroundDisplay></backgroundDisplay>
+
+    <q-page-container>
       <div class="context">
         <div class="row justify-around">
           <div class="col-lg-4">
@@ -56,7 +56,6 @@
               </div>
               <div class="q-pa-md">
                 <imageDisplay></imageDisplay>
-                <div class="q-col-gutter-md row items-start q-mt-xs"></div>
               </div>
             </q-card-section>
           </div>
