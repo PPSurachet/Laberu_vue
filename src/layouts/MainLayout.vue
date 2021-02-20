@@ -31,12 +31,6 @@
                   <q-item-label>Videos</q-item-label>
                 </q-item-section>
               </q-item>
-
-              <q-item clickable v-close-popup>
-                <q-item-section>
-                  <q-item-label>Articles</q-item-label>
-                </q-item-section>
-              </q-item>
             </q-list>
           </q-btn-dropdown>
         </q-toolbar>
@@ -45,11 +39,12 @@
     <backgroundDisplay>
     </backgroundDisplay>
 
-    <q-page-container style="padding-top: 0">
+    <q-page-container class="body" style="padding-top:0">
       <div class="context">
         <div class="row justify-around">
+          <div class="col-lg-1"></div>
           <div class="col-lg-4">
-            <q-card-section align="center">
+            <q-card-section align="center" style="left:3rem">
               <div class="text-h4">
                 Image Labeling
                 <div class="text-subtitle2">by LABERU</div>
@@ -60,44 +55,47 @@
               </div>
             </q-card-section>
           </div>
-          <div class="col-lg-5 q-mt-md">
-            <q-card flat bordered class="jjCard">
+          <div class="col-lg-1"></div>
+          <div class="col-lg-4 q-mt-md">
+            <q-card flat bordered class="loginCard">
               <q-card-section>
                 <div class="text-h4 text-center q-mt-md q-mb-md">
                   ลงชื่อเข้าใช้
                 </div>
-                <q-form>
-                  <q-input square clearable type="email" label="Email">
+                <q-form class="text-center">
+                  <q-input square clearable class="txtInput" type="email" label="Email" v-model="user.email" name="email" id="email">
                     <template v-slot:prepend>
                       <q-icon name="email" />
                     </template>
                   </q-input>
-                  <q-input square clearable type="password" label="Password">
+                  <q-input square clearable class="txtInput" type="password" label="Password"  v-model="user.password" name="password" id="password">
                     <template v-slot:prepend>
-                      <q-icon name="lock" />
+                      <q-icon
+                        :name="user.isPwd ? 'visibility_off' : 'visibility'"
+                        class="cursor-pointer hiddenIcon"
+                        @click="isPwd = !isPwd"
+                      />
                     </template>
                   </q-input>
                   <div align="right" class="q-pa-sm">
                     <q-btn
                       flat
                       size="10px"
-                      class="text-grey-6"
+                      class="forgetPW"
                       label="Forgot password?"
+                      style="left:15px"
                     />
                   </div>
                 </q-form>
                 <div align="center">
                   <q-btn
-                    class="q-mt-xs"
+                    class="q-mt-sm loginBtn"
                     outline
-                    rounded
                     @click="$router.push('/index')"
-                    style="width: 300px"
                     color="primary"
                     label="Sign in"
                   />
                 </div>
-
                 <div class="text-center q-pa-md q-gutter-md">
                   <q-btn round color="indigo-7">
                     <q-icon name="fab fa-facebook-f" size="1.5rem" />
@@ -107,13 +105,13 @@
                   </q-btn>
                 </div>
                 <q-separator inset />
-                <div class="q-mt-lg q-gutter-sm" align="center">
-                  <q-btn flat color="primary" label="Create an account" />
+                <div class="q-mt-sm q-gutter-sm" align="center">
+                  <q-btn class="createaccBtn" flat color="primary" label="Create an account" />
                 </div>
               </q-card-section>
-              <q-card-section> </q-card-section>
             </q-card>
           </div>
+          <div class="col-lg-2"></div>
         </div>
       </div>
     </q-page-container>
@@ -127,15 +125,30 @@ export default {
   components: {
     backgroundDisplay,
     imageDisplay,
+  },
+  data(){
+    return {
+      user: {
+      email : "",
+      password : "",
+    }
+    }
+    
   }
+  
 }
+
 </script>
 
 <style>
-.jjCard {
+.loginCard {
+  left: 6rem;
   height: 95%;
-  width: 70%;
+  padding: 0rem 1rem 2rem 1rem ;
+  width: auto;  
 }
+
+
 .toolbarT {
   height: 80px;
   background: #f8f8f8;
@@ -149,11 +162,6 @@ export default {
   width: 90px;
   height: 90px;
   margin: 25px;
-}
-
-.loginBtn {
-  width: 300px;
-  margin-top: 2rem;
 }
 
 .my-card {

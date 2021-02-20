@@ -1,6 +1,6 @@
 <template>
     <div class="q-col-gutter-md q-mt-sm row items-center ">
-        <div class="col" v-for="image in images">
+        <div id="reflect" class="col" v-for="image in images">
             <q-img
                 :src="image.url"
                 :width="image.width"
