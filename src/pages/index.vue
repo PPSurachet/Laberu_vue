@@ -1,342 +1,446 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
-      <div class="text-white toolbarT">
-        <q-toolbar class="row full-height justify-center">
-          <q-btn flat>
-            <q-icon name="laberu" />
-            <q-toolbar-title class="titleName"
-              ><strong>LABERU.AI</strong>
-            </q-toolbar-title>
-          </q-btn>
-          <q-space />
-          <div class="user">
-            <div class="text-h6 text-center navUsername">labelru@gmail.com</div>
-          </div>
-          <q-btn
-            flat
-            round
-            dense
-            icon="account_circle"
-            class="text-blue-grey-7"
-            size="20px"
-          >
-            <q-menu touch-position>
-              <q-list style="min-width: 100px">
-                <q-item v-close-popup>
-                  <q-btn
-                    color="amber"
-                    label="HISTORY"
-                    push
-                    @click="$router.push('/history')"
-                    size="md"
-                    v-close-popup
-                  />
-                </q-item>
-                <q-item v-close-popup>
-                  <q-btn
-                    color="red"
-                    label="Logout"
-                    push
-                    size="md"
-                    v-close-popup
-                  />
-                </q-item>
-              </q-list>
-            </q-menu>
-          </q-btn>
-        </q-toolbar>
+  <q-page>
+    <q-dialog
+      v-model="inform.persistentMaxDone"
+      persistent
+      transition-show="scale"
+      transition-hide="scale"
+    >
+      <q-card class="bg-blue-7 text-white" style="width: 300px">
+        <q-card-section>
+          <div class="text-h6">Inform</div>
+        </q-card-section>
+        <q-card-section class="q-pt-none"> Completed </q-card-section>
+        <q-card-actions align="right" class="bg-white text-teal">
+          <q-btn flat label="OK" v-close-popup @click="onLogout"/>
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+
+    <div class="row q-pa-sm">
+      <div class="col-1">
+        <q-input standout v-model="taskManager.no" label="NO" readonly />
       </div>
-    </q-header>
-    <backgroundDisplay>
-    </backgroundDisplay>
+      <div class="col-2">
+        <q-input
+          standout
+          v-model="data.shortCode"
+          label="Short Code"
+          readonly
+        />
+      </div>
+      <div class="col-7"></div>
+      <div class="col-2">
+        <q-input
+          standout
+          v-model="login.userLogin"
+          label="User login"
+          readonly
+        />
+      </div>
+    </div>
 
-    <q-page-container style="padding-top: 0">
-      <div class="context">
-        <div class="row justify-around">
-          <div class="col-md-6">
-            <q-card class="cardIMG" style="left: 20%">
-              <q-card-section>
-                <div class="row">
-                  <div class="col">
-                    <div class="imgNumber text-left" style="text-right">
-                      Image#01
-                    </div>
-                  </div>
-                  <div class="col text-right">
-                    <q-btn
-                      color="primary"
-                      label="SKIP"
-                      class="btnSkip"
-                      style="margin: 0 15px 0 0"
-                    />
-                  </div>
-                </div>
-              </q-card-section>
+    <div class="row justify-center items-center">
+      <div class="col-5 text-center">
+        <q-img
+          :src="data.imageSrc"
+          style="height: 720px; max-width: 720px"
+          native-context-menu
+        >
+          <q-icon
+            class="absolute all-pointer-events"
+            size="32px"
+            name="info"
+            color="white"
+            style="top: 8px; left: 8px"
+          >
+            <q-tooltip>Tooltip</q-tooltip>
+          </q-icon>
+        </q-img>
+      </div>
 
-              <q-card-section>
-                <div class="q-pa-md">
-                  <img
-                    src="../images/image_1.jpg"
-                    alt=""
-                    class="imgMain"
-                    width="100%"
-                    height="auto"
-                  />
-                </div>
-                <div class="imgID">
-                  Image ID : 00715AB
-                </div>
-              </q-card-section>
-            </q-card>
+      <div class="col-5 text-center">
+        <div class="row q-mt-sm">
+          <div class="col-2"></div>
+          <div class="col-8 bg-info items-start">
+            <div class="row">
+              <div class="col-0.5 text-center">
+                <a target="_blank" :href="data.imageIG"
+                  ><img
+                    src="~assets/logo_ig.png"
+                    style="height: 50px; max-width: 50px"
+                /></a>
+              </div>
+              <div class="col">
+                <q-input
+                  filled
+                  v-model="data.userName"
+                  readonly
+                  label="Username"
+                  stack-label
+                />
+              </div>
+
+              <div class="col">
+                <q-input
+                  filled
+                  v-model="data.fullName"
+                  readonly
+                  label="Fullname"
+                  stack-label
+                />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <q-input
+                  filled
+                  v-model="data.locationName"
+                  readonly
+                  label="Location Name"
+                  stack-label
+                />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <q-input
+                  filled
+                  v-model="data.captionText"
+                  readonly
+                  type="textarea"
+                  label="Caption Text"
+                  stack-label
+                />
+              </div>
+            </div>
           </div>
-          <div class="col-md-6">
-            <q-card class="cardText" style="left: 15%">
-              <q-card-section>
-                <div class="text-h6 text-center">
-                  <b>Describe the Image</b>
-                </div>
-              </q-card-section>
-              <q-card-actions vertical>
-                <div
-                  class="q-pa-md"
-                  style="max-width: 90% align-item-center"
-                  row="100"
-                >
-                  <q-input
-                    class="textDescribe"
-                    filled
-                    type="textarea"
-                    placeholder="โปรดใส่คำอธิบายรูปภาพ"
-                  />
-                </div>
+          <div class="col-2"></div>
+        </div>
 
-                <div class="btnSave">
-                  <q-btn class="btnColor" label="SAVE" />
-                </div>
-              </q-card-actions>
-            </q-card>
-            <!-- <q-card class="cardProfile" style="left: 15%">
-              <q-card-section>
-                <div class="text-h6 text-center"><b>Profile</b></div>
-              </q-card-section>
-              <q-card-actions vertical>
-                <div class="row" style="padding-bottom:20px">
-                  <div class="col-4">
-                    <div class="row">
-                      <q-icon name="fas fa-images" class="ProfileIMG" />
-                      <div class="detail">x 155</div>
-                    </div>
-                  </div>
-                  <div class="col-6">
-                    <div class="row">
-                      <q-icon name="fas fa-wallet" class="ProfileIMG" />
-                      <div class="detail">3000 Baht</div>
-                    </div>
-                  </div>
-                </div>
-              </q-card-actions>
-            </q-card> -->
+        <div class="row"></div>
+        <div class="row q-mt-sm">
+          <div class="col-2"></div>
+          <div class="col-8 bg-info items-start">
+            <q-btn-toggle
+              v-model="toggle.advertisement"
+              spread
+              no-caps
+              toggle-color="purple"
+              color="white"
+              text-color="black"
+              :options="[
+                { label: 'Advertisement', value: true },
+                { label: 'Not Advertisement', value: false },
+              ]"
+              @click="onCheckToggle"
+            />
           </div>
         </div>
+        <div class="row q-mt-sm">
+          <div class="col-2"></div>
+          <div class="col-8 bg-info items-start">
+            <q-btn-toggle
+              v-model="toggle.tourism"
+              spread
+              no-caps
+              toggle-color="pink"
+              color="white"
+              text-color="black"
+              :options="[
+                { label: 'Tourism', value: true },
+                { label: 'Not Tourism', value: false },
+              ]"
+              @click="onCheckToggle"
+            />
+          </div>
+        </div>
+        <div class="row q-mt-sm">
+          <div class="col-2"></div>
+          <div class="col-8 text-center">
+            <q-btn
+              color="green-6"
+              class="full-width"
+              label="Save"
+              @click="onSave"
+            />
+          </div>
+        </div>
+        <div class="row q-mt-sm"></div>
       </div>
-    </q-page-container>
-  </q-layout>
+    </div>
+  </q-page>
 </template>
 
 <script>
-import backgroundDisplay from '../components/login_animation'
-export default{
-  components:{
-    backgroundDisplay
-  }
-}
+import { mapGetters } from "vuex";
+import { QSpinnerFacebook } from "quasar";
+export default {
+  name: "PageIndex",
+  computed: {
+    ...mapGetters({
+      user_login: "user_login/user_login",
+    }),
+  },
+  data() {
+    return {
+      login: {
+        userLogin: null,
+      },
+      taskManager: {
+        massage: null,
+        no: null,
+      },
+      data: {
+        imageSrc: null,
+        imageIG: null,
+        shortCode: null,
+        fullName: null,
+        userName: null,
+        locationName: null,
+        captionText: null,
+      },
+      classification: {
+        shortCode: null,
+        ads: null,
+        tourist: null,
+        timeStart: null,
+        timeStop: null,
+        userId: null,
+        status: null,
+        no: null,
+      },
+      toggle: {
+        advertisement: null,
+        tourism: null,
+      },
+      inform: {
+        persistentMaxDone: false,
+      },
+      timer: 0,
+    };
+  },
+  async mounted() {
+    this.login.userLogin = this.user_login;
+    console.log("User Login : ", this.login.userLogin);
+    this.init();
+  },
+  methods: {
+    async init() {
+      this.showLoading();
+      this.toggle.advertisement = null;
+      this.toggle.tourism = null;
+      await this.getHelpTaskManager();
+      if (this.taskManager.massage == "Data") {
+        console.log(this.taskManager.massage);
+        console.log(this.taskManager.no);
+        await this.getHelpClassification();
+        await this.putHelpClassificationStart();
+        await setTimeout(await this.display, 500);
+      } else if (this.taskManager.massage == "Reset_Status") {
+        console.log(this.taskManager.massage);
+        await this.putHelpClassificationSetStatusAll();
+        await this.init();
+      } else if (this.taskManager.massage == "Completed") {
+        console.log(this.taskManager.massage);
+        await this.onTimeout();
+        this.inform.persistentMaxDone = true;
+      }
+    },
+
+    async display() {
+      await this.getHelpClassification();
+      if (this.classification.userId == this.login.userLogin) {
+        await this.getHelpData();
+        await this.onTimeout();
+      } else {
+        await this.init();
+      }
+    },
+
+    // >> TaskManager
+    async getHelpTaskManager() {
+      try {
+        const response = await this.$axios.get(
+          "https://insightapi-myzemjarqq-as.a.run.app/api/HelpTaskManager"
+        );
+        this.taskManager.massage = response.data.massage;
+        this.taskManager.no = response.data.no;
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
+    // >> Data
+    async getHelpData() {
+      try {
+        const response = await this.$axios.get(
+          "https://insightapi-myzemjarqq-as.a.run.app/api/HelpData/" +
+            this.classification.shortCode
+        );
+        this.data.imageSrc =
+          "https://storage.cloud.google.com/instagram_phuket/post_image/" +
+          response.data.shortCode +
+          ".jpg";
+        this.data.imageIG =
+          "https://www.instagram.com/" + response.data.username;
+        this.data.shortCode = response.data.shortCode;
+        this.data.fullName = response.data.fullname;
+        this.data.userName = response.data.username;
+        this.data.locationName = response.data.locationName;
+        this.data.captionText = response.data.captionText;
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
+    // >> Classification
+    async getHelpClassification() {
+      try {
+        const response = await this.$axios.get(
+          "https://insightapi-myzemjarqq-as.a.run.app/api/HelpClassification/" +
+            this.taskManager.no
+        );
+        this.classification.shortCode = response.data.shortCode;
+        this.classification.ads = response.data.isAds;
+        this.classification.tourist = response.data.isTourist;
+        this.classification.timeStart = response.data.timeStart;
+        this.classification.timeStop = response.data.timeStop;
+        this.classification.userId = response.data.userId;
+        this.classification.status = response.data.status;
+        this.classification.no = response.data.no;
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
+    async putHelpClassificationStart() {
+      try {
+        const response = await this.$axios.put(
+          "https://insightapi-myzemjarqq-as.a.run.app/api/HelpClassification/Start/" +
+            this.taskManager.no,
+          {
+            ShortCode: this.classification.shortCode,
+            IsAds: this.classification.ads,
+            IsTourist: this.classification.tourist,
+            TimeStart: 0,
+            TimeStop: 0,
+            UserId: this.login.userLogin,
+            Status: true,
+            No: this.classification.no,
+          }
+        );
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
+    async putHelpClassificationStop() {
+      try {
+        const response = await this.$axios.put(
+          "https://insightapi-myzemjarqq-as.a.run.app/api/HelpClassification/Stop/" +
+            this.taskManager.no,
+          {
+            ShortCode: this.classification.shortCode,
+            IsAds: this.toggle.advertisement,
+            IsTourist: this.toggle.tourism,
+            TimeStart: this.classification.timeStart,
+            TimeStop: 0,
+            UserId: this.classification.userId,
+            Status: this.classification.status,
+            No: this.classification.no,
+          }
+        );
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
+    async putHelpClassificationSetStatusAll() {
+      try {
+        const response = await this.$axios.put(
+          "https://insightapi-myzemjarqq-as.a.run.app/api/HelpClassification/SetStatusAll"
+        );
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
+    // >> Button
+    async onSave() {
+      console.log("onSave");
+      if (this.toggle.advertisement == null && this.toggle.tourism == null) {
+        console.log("Do nothing");
+      } else {
+        console.log("Doen");
+        await this.getHelpClassification();
+        await this.putHelpClassificationStop();
+        await this.init();
+      }
+    },
+
+    onCheckToggle() {
+      if (this.toggle.advertisement == true) {
+        this.toggle.tourism = false;
+      } else if (this.toggle.tourism == true) {
+        this.toggle.advertisement = false;
+      } else if (this.toggle.advertisement == false) {
+        this.toggle.tourism = false;
+      } else if (this.toggle.tourism == false) {
+        this.toggle.advertisement = false;
+      }
+    },
+
+    onLogout() {
+      console.log("Logout");
+      this.$auth
+        .signOut()
+        .then(() => {
+          this.$router.push({ name: "signin", params: { nextUrl: "/home" } });
+        })
+        .catch((error) => {
+          // An error happened.
+        });
+    },
+
+    onTimeout(){
+      this.timer = setTimeout(() => {
+          this.$q.loading.hide();
+          this.timer = void 0;
+        }, 500);
+    },
+
+    // >> Loading
+    showLoading() {
+      this.$q.loading.show({
+        spinner: QSpinnerFacebook,
+        spinnerColor: "yellow",
+        spinnerSize: 140,
+        backgroundColor: "blue-8",
+      });
+    },
+  },
+  beforeDestroy() {
+    if (this.timer !== void 0) {
+      clearTimeout(this.timer);
+      this.$q.loading.hide();
+    }
+  },
+};
 </script>
 
 <style>
-.navUsername {
-  color: black;
+html,
+body {
+  height: 100%;
 }
-.imgNumber {
-  padding: 5px 0 0 15px;
-  font-weight: bold;
-  font-size: 18px;
-}
-.imgID {
-  padding: 0 15px 0 0;
-  text-align: right;
-  font-size: 10px;
-}
-
-.detail {
-  padding: 5px 0 0 20px;
-  font-weight: bold;
-  font-size: 18px;
-}
-.ProfileIMG {
-  color: black;
-  padding: 0 0 0 50px;
-
-  font-size: 40px;
-}
-.iconIMG {
-  font-size: 50px;
-  padding: 0 0 0 50px;
-}
-.cardIMG {
-  width: 700px;
-  border-radius: 10px;
-}
-.cardText {
-  width: 500px;
-  border-radius: 10px;
-}
-.cardProfile {
-  margin: 30px 0 0 0;
-  width: 500px;
-  height: 200px;
-  border-radius: 10px;
-}
-
-.imgMain {
-  width: 100%;
-  border-radius: 5px;
-}
-
-.imgID {
-  margin: -10px 0 0 0;
-  font-size: 10px;
-}
-
-.q-pa-md {
-  padding: 16px 16px;
-  margin: -20px 0 0 0;
-}
-
-.btnSkip {
-  border-radius: 5px;
-  font-size: 12px;
-  width: 20%;
-  height: 90%;
-}
-.btnColor {
-  width: 90%;
-  background-color: #6bce2e;
-  color: white;
-}
-
-.textDescribe {
-  resize: none !important;
-}
-.q-textarea .q-field__native {
-  resize: none;
-  padding-top: 17px;
-  min-height: 52px;
-}
-
-.btnSave {
-  padding: 10px 10px 10px 10px;
-  text-align: center;
-}
-
-.toolbarT {
-  height: 80px;
-  background: #f8f8f8;
-}
-
-.titleName {
-  color: #666877;
-}
-
-.my-card {
-  width: 400px;
-  border-radius: 10px;
-}
-
-.context {
-  width: 100%;
-  position: absolute;
-  top: 10rem;
-}
-
-.iconic {
-  /* Group 65 */
-
-  position: absolute;
-  width: 30px;
-  height: 30px;
-
-  box-shadow: inset 0px 0px 62px rgba(0, 0, 0, 0.25);
-
-  /* Ellipse 74 */
-
-  position: absolute;
-  width: 30px;
-  height: 30px;
-
-  background: #6d6b8a;
-
-  /* Group 64 */
-
-  position: absolute;
-  width: 16.62px;
-  height: 19.56px;
-
-  /* Rectangle 128 */
-
-  position: absolute;
-  width: 1.8px;
-  height: 15.21px;
-
-  background: #d15eff;
-  border-radius: 3px;
-
-  /* Rectangle 130 */
-
-  position: absolute;
-  width: 1.8px;
-  height: 10.37px;
-
-  background: #d15eff;
-  border-radius: 3px;
-
-  /* Rectangle 132 */
-
-  position: absolute;
-  width: 1.8px;
-  height: 6.57px;
-
-  background: #d15eff;
-  border-radius: 3px;
-
-  /* Rectangle 129 */
-
-  position: absolute;
-  width: 1.8px;
-  height: 5.65px;
-
-  background: #d15eff;
-  border-radius: 3px;
-  transform: rotate(-90deg);
-
-  /* Rectangle 131 */
-
-  position: absolute;
-  width: 2.18px;
-  height: 16.62px;
-
-  background: #d15eff;
-  border-radius: 3px;
-  transform: rotate(-90deg);
-
-  /* Rectangle 133 */
-
-  position: absolute;
-  width: 1.8px;
-  height: 16.62px;
-
-  background: #d15eff;
-  border-radius: 3px;
-  transform: rotate(-90deg);
+body {
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 254, 234, 1) 0%,
+    rgba(255, 254, 234, 1) 35%,
+    #b7e8eb 100%
+  );
+  overflow: hidden;
 }
 </style>
