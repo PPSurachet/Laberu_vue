@@ -2,7 +2,7 @@
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
       <div class="text-white toolbarT">
-        <q-toolbar class="row full-height justify-center fixed-bar">
+        <q-toolbar class="row full-height justify-center">
           <q-btn flat>
             <q-icon name="img:../icons/icon.png" size="3rem" />
             <q-toolbar-title class="titleName"
@@ -42,10 +42,10 @@
         </q-toolbar>
       </div>
     </q-header>
+    <backgroundDisplay>
+    </backgroundDisplay>
 
-    <backgroundDisplay></backgroundDisplay>
-
-    <q-page-container>
+    <q-page-container style="padding-top: 0">
       <div class="context">
         <div class="row justify-around">
           <div class="col-lg-4">
@@ -56,6 +56,7 @@
               </div>
               <div class="q-pa-md">
                 <imageDisplay></imageDisplay>
+                <div class="q-col-gutter-md row items-start q-mt-xs"></div>
               </div>
             </q-card-section>
           </div>
@@ -66,12 +67,12 @@
                   ลงชื่อเข้าใช้
                 </div>
                 <q-form>
-                  <q-input square clearable type="email" label="Email">
+                  <q-input square clearable type="email" label="Email" v-model="email">
                     <template v-slot:prepend>
                       <q-icon name="email" />
                     </template>
                   </q-input>
-                  <q-input square clearable type="password" label="Password">
+                  <q-input square clearable type="password" label="Password" v-model="password">
                     <template v-slot:prepend>
                       <q-icon name="lock" />
                     </template>
@@ -90,7 +91,7 @@
                     class="q-mt-xs"
                     outline
                     rounded
-                    @click="$router.push('/index')"
+                    @click="checkLogin()"
                     style="width: 300px"
                     color="primary"
                     label="Sign in"
@@ -122,10 +123,43 @@
 <script>
 import backgroundDisplay from '../components/login_animation'
 import imageDisplay from '../components/login_image'
+import { mapGetters } from "vuex";
+import { mapActions } from "vuex";
 export default {
   components: {
     backgroundDisplay,
     imageDisplay,
+  },
+  // computed:{
+  //   ...mapGetters({
+  //     user_login: "user_login/user_login"
+  //   })
+  // },
+  data(){
+    return{
+      email:"",
+      password:"",
+    }
+  },
+  methods:{
+    ...mapActions({
+      setUserLogin: "user_login/setUserLogin",
+      setUserID:"user_id/setUserID"
+      
+    }),
+    async checkLogin(){
+      const response = await this.$axios.get(`https://testlaberu3-uag2fgef3q-as.a.run.app/user/check_login/${this.email}/${this.password}`)
+      if(response.data[0].length != 0){
+
+        const user_login = { email: this.email, };
+        const user_id = { id: response.data[0]._id, };
+
+        this.setUserLogin(user_login);
+        this.setUserID(user_id);
+        
+        this.$router.push('/Index');
+      }
+    }
   }
 }
 </script>

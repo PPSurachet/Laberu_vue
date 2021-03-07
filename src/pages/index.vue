@@ -11,7 +11,7 @@
           </q-btn>
           <q-space />
           <div class="user">
-            <div class="text-h6 text-center navUsername">labelru@gmail.com</div>
+            <div class="text-h6 text-center navUsername"> {{ this.user.name }} </div>
           </div>
           <q-btn
             flat
@@ -48,7 +48,6 @@
         </q-toolbar>
       </div>
     </q-header>
-    <background-display></background-display>
 
     <q-page-container style="padding-top: 0">
       <div class="context">
@@ -68,6 +67,7 @@
                       label="SKIP"
                       class="btnSkip"
                       style="margin: 0 15px 0 0"
+                      @click="onSkip()"
                     />
                   </div>
                 </div>
@@ -131,7 +131,7 @@
                   <div class="col-6">
                     <div class="row">
                       <q-icon name="fas fa-wallet" class="ProfileIMG" />
-                      <div class="detail">3000 Baht</div>
+                      <div class="detail">8080 Baht</div>
                     </div>
                   </div>
                 </div>
@@ -146,11 +146,24 @@
 
 <script>
 import { QSpinnerFacebook } from 'quasar';
+import { Dialog } from 'quasar'
+import Axios from 'axios';
+import { mapGetters } from "vuex";
+
 export default {
+  computed:{
+    ...mapGetters({
+      user_login: "user_login/user_login",
+      user_id: "user_id/user_id"
+    }),
+  },
   data(){
     return {
+      config:{
+        people:3
+      },
       user:{
-        _id:'6023a41eaf493f54ec7a856e',
+        _id:null,
         name:null,
       },
       dataImage:{
@@ -174,31 +187,37 @@ export default {
       }
     }
   },
-  // created(){
-  //   window.addEventListener('onbeforeunload',this.resetStatus())
-  // },
-  // mounted(){
-  //   this.init();
-  // },
+  async mounted(){
+    await this.setUserData();
+    await this.initState();
+    await this.resetStatus();
+  },
   methods:{
-    async init(){
+    async initState(){
       this.showLoading();
-      if(this.checkDone()){
-        await this.getImageByUser();
-        await this.updateStatusTask(true);
-        await this.setImageData();
-        if(this.insertNewRecord()){
+      if(await this.checkDone()){
+        if(await this.getImageByUser()){
+          await this.updateStatusTask(true);
+          await this.setImageData();
           this.onTimeout();
+        }else{
+          this.onTimeout();
+          this.showMessage();
         }
       }else{
+        this.onTimeout();
         this.showMessage();
       }
     },
+    async setUserData(){
+      this.user.name = await this.user_login;
+      this.user._id = await this.user_id;
+    },
     async checkDone() {
       try {
-        const responseImage = await this.$axios.get('https://testlaberu3-uag2fgef3q-as.a.run.app/image-data/getCountImage')
-        const responseTaskImage = await this.$axios.get('https://testlaberu3-uag2fgef3q-as.a.run.app/task-image/getCountTaskSuccess')
-        if(responseTaskImage.data > responseImage){
+        const responseImage = await Axios.get('https://testlaberu3-uag2fgef3q-as.a.run.app/image-data/getCountImage')
+        const responseTaskImage = await Axios.get('https://testlaberu3-uag2fgef3q-as.a.run.app/task-image/getCountTaskSuccess')
+        if(responseTaskImage.data < responseImage.data){
           return true;
         }else{
           return false;
@@ -209,105 +228,126 @@ export default {
     },
     async getImageByUser(){
       try {
-        const response = await this.$axios.get(`https://testlaberu3-uag2fgef3q-as.a.run.app/task-image/findImage/${this.user._id}`);
-        this.taskImage._id = response.data[0]._id;
-        this.taskImage.shortcode = response.data[0].shortcode;
-        this.taskImage.status = response.data[0].status;
-        this.taskImage.process = response.data[0].process;
+        const response = await Axios.get(`https://testlaberu3-uag2fgef3q-as.a.run.app/task-image/findImage/${this.user._id}`);
+
+        if(response.data[0] != null){
+          this.taskImage._id = response.data[0]._id;
+          this.taskImage.shortcode = response.data[0].shortcode;
+          this.taskImage.status = response.data[0].status;
+          this.taskImage.process = response.data[0].process;
+          return true;
+        }else{
+          return false
+        }
       } catch (error) {
         console.log(error);
       }
     },
     async setImageData(){
       try {
-        const response = await this.$axios.get(`https://testlaberu3-uag2fgef3q-as.a.run.app/image-data/${this.taskImage.shortcode}`);
+        const response = await Axios.get(`https://testlaberu3-uag2fgef3q-as.a.run.app/image-data/${this.taskImage.shortcode}`);
         this.dataImage._id = response.data[0]._id;
         this.dataImage.shortcode = response.data[0].shortcode;
+        this.taskSuccess.time_start = Date.now();
+        return true;
       } catch (error) {
         console.log(error);
       }
     },
     async updateStatusTask (inputStatus) {
       try {
-        await this.$axios.put(`https://testlaberu3-uag2fgef3q-as.a.run.app/task-image/update_status/${this.taskImage._id}`,{
+        await Axios.put(`https://testlaberu3-uag2fgef3q-as.a.run.app/task-image/update_status/${this.taskImage._id}`,{
           status:inputStatus
         })
       } catch (error) {
         console.log(error);
       }
     },
-    async insertNewRecord(){
+    async onSave() {
       try {
-        const response = await this.$axios.post(`https://testlaberu3-uag2fgef3q-as.a.run.app/task-success/create`,{
+        await Axios.post(`https://testlaberu3-uag2fgef3q-as.a.run.app/task-success/create`,{
             shortcode:this.taskImage.shortcode,
-            caption:null,
-            time_start:null,
-            time_stop:null,
+            caption:this.taskSuccess.caption,
+            time_start:this.taskSuccess.time_start,
+            time_stop:Date.now(),
             user_id: this.user._id,
             task_id: this.taskImage._id,
         })
+        
+        await this.updateStatusTask(false);
+        await this.checkConfig();
+        this.taskSuccess.caption = null;
+        this.initState()
 
-        this.taskSuccess._id = response.data._id;
       } catch (error) {
         console.log(error);
       }
     },
-    async onSave() {
-      try {
-        await this.$axios.put(`https://testlaberu3-uag2fgef3q-as.a.run.app/task-success/updateOnSave/${this.taskSuccess._id}`,{
-            shortcode:this.taskImage.shortcode,
-            caption:this.taskSuccess.caption,
-            time_start:null,
-            time_stop:null,
-            user_id: this.user._id,
-            task_id: this.taskImage._id,
+    async checkConfig(){
+        const countSuccess = await Axios.get(`http://localhost:8080/task-success/findCountByShortcode/${this.taskImage.shortcode}`)
+        if(countSuccess.data == this.config.people){
+          try {
+            await Axios.put(`http://localhost:8080/task-image/update_process/${this.taskImage._id}`,{
+              status:true,
+              process:true
+            });
+          } catch (error) {
+            console.log(error);
+          }
+        }
+    },
+    async onSkip(){
+        const currentTaskSkipID = this.taskImage._id;
+        await this.initState();
+        try {
+          await Axios.put(`https://testlaberu3-uag2fgef3q-as.a.run.app/task-image/update_status/${currentTaskSkipID}`,{
+            status:false
+          })
+        } catch (error) {
+          console.log(error);
+        }
+    },
+    async resetStatus(){
+      const taskImageID = this.taskImage._id;
+      window.addEventListener('beforeunload', event => {
+        Axios.put(`https://testlaberu3-uag2fgef3q-as.a.run.app/task-image/update_status/${taskImageID}`,{
+            status:false
         })
-
-        await this.updateStatusTask(false);
-        this.taskSuccess.caption = null;
-        this.init();
-
-      } catch (error) {
-        console.log(error);
-      }
+      })
     },
     showLoading () {
       this.$q.loading.show({
         spinner: QSpinnerFacebook,
         spinnerColor: 'yellow',
-        spinnerSize: 140,
+        spinnerSize: 180,
         backgroundColor: 'blue-8',
       })
     },
     showMessage () {
-      this.$q.loading.show({
-        spinner: null,
-        spinnerColor: null,
-        spinnerSize: 0,
-        backgroundColor: 'blue-8',
-        message:'Enee ๆ ๆ ๆ ๆ ๆ ๆ'
+      this.$q.dialog({
+        title: 'Alert',
+        message: 'งานเสร๊จหมดแล้วจ้า ไม่มีงานให้ทำแล้ววววววว'
+      }).onOk(() => {
+        this.$router.push('/');
+      }).onCancel(() => {
+        this.$router.push('/');
+      }).onDismiss(() => {
+        this.$router.push('/');
       })
     },
     onTimeout () {
         this.timer = setTimeout(() => {
         this.$q.loading.hide()
         this.timer = void 0
-      }, 2000)
+      }, 500)
     },
-    async resetStatus(){
-        await this.$axios.put(`https://testlaberu3-uag2fgef3q-as.a.run.app/task-image/update_status/${this.taskSuccess._id}`,{
-          status:false
-        })
-
-        await this.$axios.delete(`https://testlaberu3-uag2fgef3q-as.a.run.app/task-success/delete${this.taskSuccess._id}`)
-    }
   },
   beforeDestroy () {
     if (this.timer !== void 0) {
       clearTimeout(this.timer)
       this.$q.loading.hide()
     }
-  }
+  },
 }
 </script>
 
@@ -440,7 +480,7 @@ export default {
   width: 20px;
   height: 20px;
   background: rgba(94, 51, 51, 0.24);
-  animation: animate 25s linear infinite;
+  animation: animate 25s linear infinitStatee;
   bottom: -150px;
 }
 
