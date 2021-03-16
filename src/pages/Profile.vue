@@ -56,43 +56,49 @@
           <q-card class="profileCard">
             <q-card-section>
               <div class="profileLabel">Profile and History</div>
-              </q-card-section>
-              <div class="col-12">
-            <div class="row">
-              <div class="col paddingCol">
-                 <div class="profileBG">PRAYUT</div>  
+            </q-card-section>
+            <div class="col-12">
+              <div class="row">
+                <div class="col paddingCol">
+                  <div class="profileBG">PRAYUT</div>
+                </div>
+                <div class="col paddingCol">
+                  <div class="profileBG">CHAN O CHA</div>
+                </div>
               </div>
-              <div class="col paddingCol">
-                <div class="profileBG">CHAN O CHA</div>  
-              </div>
-            </div>
-            <div class="row">
+              <div class="row">
                 <div class="col-2 paddingAge">
-                    <div class="profileBG">20 ปี</div>  
+                  <div class="profileBG">20 ปี</div>
                 </div>
                 <div class="col-4 paddingTel">
-                    <div class="profileBG">0991115554</div>
+                  <div class="profileBG">0991115554</div>
                 </div>
                 <div class="col-6 paddingEmail">
-                    <div class="profileBG">test@hotmail.com</div>
-                </div>            
-            </div>
-            <div class="row">
-              <div class="col paddingCol">
-                <div class="profileBG">???????????????????????</div>
+                  <div class="profileBG">test@hotmail.com</div>
+                </div>
               </div>
-            </div>
+              <div class="row">
+                <div class="col paddingCol">
+                  <div class="profileBG">???????????????????????</div>
+                </div>
+              </div>
 
-    <div class="row">
-        <div class="col paddingCol"><div class="totalText">ยอดรวมทั้งหมด : 23</div></div>
-        <div class="col paddingCol"><div class="acceptText">ยอมรับ : 23</div></div>
-        <div class="col paddingCol"><div class="declineText">ปฏิเสธ : 0</div></div>
-    </div>
-    <div class="row">
-            <div class="col paddingCol"><div class="totalMoneyText">เป็นเงินสุทธิ์ : 1500</div></div>
-
-    </div>
-
+              <div class="row">
+                <div class="col paddingCol">
+                  <div class="totalText">ยอดรวมทั้งหมด : 23</div>
+                </div>
+                <div class="col paddingCol">
+                  <div class="acceptText">ยอมรับ : 23</div>
+                </div>
+                <div class="col paddingCol">
+                  <div class="declineText">ปฏิเสธ : 0</div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col paddingCol">
+                  <div class="totalMoneyText">เป็นเงินสุทธิ์ : 1500</div>
+                </div>
+              </div>
             </div>
           </q-card>
         </div>
@@ -120,47 +126,35 @@ export default {
 </script>
 
 <style>
-
-.totalMoneyText{
-    text-align: right;
-    font-weight: bold;
-    font-size: 14px;
+.totalMoneyText {
+  text-align: right;
+  font-weight: bold;
+  font-size: 14px;
 }
 
-
-.acceptText{
-    text-align: center;
-    font-weight: bold;
-    font-size: 14px;
+.acceptText {
+  text-align: center;
+  font-weight: bold;
+  font-size: 14px;
 }
 
-.declineText{
-    text-align: right;
-    font-weight: bold;
-    font-size: 14px;
+.declineText {
+  text-align: right;
+  font-weight: bold;
+  font-size: 14px;
 }
 
-
-.totalText{
-    text-align: left;
-    font-weight: bold;
-    font-size: 14px;
+.totalText {
+  text-align: left;
+  font-weight: bold;
+  font-size: 14px;
 }
 
-.profileBG{
-    color: #6A6969;
-    padding: 10px 10px 10px 10px;
-    border-radius: 10px;
-    background-color: #E3DCDC;
-}
-
-.btnRegis {
-  height: 40px;
-  width: 40%;
-}
-
-.regisCol {
-  padding: 40px 0 0 0;
+.profileBG {
+  color: #6a6969;
+  padding: 10px 10px 10px 10px;
+  border-radius: 10px;
+  background-color: #e3dcdc;
 }
 
 .profileLabel {
@@ -184,7 +178,7 @@ export default {
   padding: 15px 30px 15px 30px;
 }
 .profileCard {
-    border-radius: 10px;
+  border-radius: 10px;
   width: 700px;
   padding: 30px 30px 30px 30px;
 }

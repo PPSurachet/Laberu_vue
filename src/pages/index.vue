@@ -49,7 +49,6 @@
       </div>
     </q-header>
     <background-display></background-display>
-
     <q-page-container style="padding-top: 0">
       <div class="context">
         <div class="row items-center">
@@ -72,7 +71,6 @@
                   </div>
                 </div>
               </q-card-section>
-
               <q-card-section>
                 <div class="q-pa-md">
                   <img
@@ -115,27 +113,6 @@
                 </div>
               </q-card-actions>
             </q-card>
-            <!-- <q-card class="cardProfile" style="left: 15%">
-              <q-card-section>
-                <div class="text-h6 text-center"><b>Profile</b></div>
-              </q-card-section>
-              <q-card-actions vertical>
-                <div class="row" style="padding-bottom:20px">
-                  <div class="col-4">
-                    <div class="row">
-                      <q-icon name="fas fa-images" class="ProfileIMG" />
-                      <div class="detail">x 155</div>
-                    </div>
-                  </div>
-                  <div class="col-6">
-                    <div class="row">
-                      <q-icon name="fas fa-wallet" class="ProfileIMG" />
-                      <div class="detail">3000 Baht</div>
-                    </div>
-                  </div>
-                </div>
-              </q-card-actions>
-            </q-card> -->
           </div>
         </div>
       </div>
@@ -144,14 +121,12 @@
 </template>
 
 <script>
-
-import backgroundDisplay from '../components/login_animation'
+import backgroundDisplay from "../components/login_animation";
 export default {
   components: {
-    backgroundDisplay,
+    backgroundDisplay
   }
-}
-
+};
 </script>
 
 <style>
