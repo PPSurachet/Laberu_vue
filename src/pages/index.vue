@@ -25,16 +25,6 @@
               <q-list style="min-width: 100px">
                 <q-item v-close-popup>
                   <q-btn
-                    color="amber"
-                    label="HISTORY"
-                    push
-                    @click="$router.push('/history')"
-                    size="md"
-                    v-close-popup
-                  />
-                </q-item>
-                <q-item v-close-popup>
-                  <q-btn
                     color="red"
                     label="Logout"
                     push
@@ -92,51 +82,67 @@
           </div>
           <div class="col-md-6">
             <q-card class="cardText" style="left: 15%">
+              <q-card-actions vertical>
+                <div
+                  style="max-width: 90% align-item-center"
+                  row="100"
+                >
+                   <div style="margin-top:0">
+                        <q-list class="rounded-borders" style="max-width: 100%">
+                          <q-expansion-item
+                            label="Guide"
+                            icon="link"
+                            style="font-weight:bold;font-size:16px"
+                          >
+                          <q-card style="padding: 0px 20px 10px 20px">
+                            <q-card-section>
+                              ##
+                              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem, eius reprehenderit eos corrupti
+                              commodi magni quaerat ex numquam, dolorum officiis modi facere maiores architecto suscipit iste
+                              eveniet doloribus ullam aliquid.
+                            </q-card-section>
+                          </q-card>
+                        </q-expansion-item>
+
+                      </q-list>
+                    </div>
+                    
+                </div>
+              </q-card-actions>
+            </q-card> 
+
+            <q-card class="cardText" style="left: 15%; top:3%">
               <q-card-section>
                 <div class="text-h6 text-center">
                   <b>Describe the Image</b>
                 </div>
               </q-card-section>
               <q-card-actions vertical>
+                
                 <div
                   class="q-pa-md"
                   style="max-width: 90% align-item-center"
                   row="100"
                 >
+                <q-form
+                  @submit="onSubmit"
+                  >
                   <q-input
-                    class="textDescribe"
                     filled
+                    class="textDescribe"
+                    v-model="deciptionArea"
+                    label="โปรดใส่คำอธิบายรูปภาพ*"
                     type="textarea"
-                    placeholder="โปรดใส่คำอธิบายรูปภาพ"
+                    lazy-rules
+                    :rules="[ val => val && val.length > 0 || 'Please type something']"
                   />
-                </div>
-
-                <div class="btnSave">
-                  <q-btn class="btnColor" label="SAVE" />
-                </div>
+                  <div class="btnSave">
+                      <q-btn class="btnColor" label="Save" type="submit"/>
+                  </div>
+                  </q-form>
+                </div> 
               </q-card-actions>
             </q-card>
-            <!-- <q-card class="cardProfile" style="left: 15%">
-              <q-card-section>
-                <div class="text-h6 text-center"><b>Profile</b></div>
-              </q-card-section>
-              <q-card-actions vertical>
-                <div class="row" style="padding-bottom:20px">
-                  <div class="col-4">
-                    <div class="row">
-                      <q-icon name="fas fa-images" class="ProfileIMG" />
-                      <div class="detail">x 155</div>
-                    </div>
-                  </div>
-                  <div class="col-6">
-                    <div class="row">
-                      <q-icon name="fas fa-wallet" class="ProfileIMG" />
-                      <div class="detail">3000 Baht</div>
-                    </div>
-                  </div>
-                </div>
-              </q-card-actions>
-            </q-card> -->
           </div>
         </div>
       </div>
@@ -149,11 +155,46 @@ import backgroundDisplay from '../components/login_animation'
 export default{
   components:{
     backgroundDisplay
+  },
+  data(){
+    return{
+    deciptionArea: null,
+    }
+  },
+  methods: {
+    onSubmit () {
+      if (this.accept !== true) {
+        this.$q.notify({
+          color: 'red-5',
+          textColor: 'white',
+          icon: 'warning',
+          message: 'You need to accept the license and terms first'
+        })
+      }
+      else {
+        this.$q.notify({
+          color: 'green-4',
+          textColor: 'white',
+          icon: 'cloud_done',
+          message: 'Submitted'
+        })
+      }
+    },
   }
 }
 </script>
 
 <style>
+.exampleWay input{
+  font-size: 15px;
+  font-weight:500;
+  opacity: 1;
+}
+
+.exampleWay{
+  height: 5rem;
+}
+
 .navUsername {
   color: black;
 }

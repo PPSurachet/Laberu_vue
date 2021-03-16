@@ -11,28 +11,7 @@
           </q-btn>
           <q-space />
 
-          <q-btn-dropdown
-            flat
-            round
-            dense
-            icon="account_circle"
-            class="text-blue-grey-7"
-            size="1.5rem"
-          >
-            <q-list>
-              <q-item clickable v-close-popup>
-                <q-item-section>
-                  <q-item-label>Photos</q-item-label>
-                </q-item-section>
-              </q-item>
 
-              <q-item clickable v-close-popup>
-                <q-item-section>
-                  <q-item-label>Videos</q-item-label>
-                </q-item-section>
-              </q-item>
-            </q-list>
-          </q-btn-dropdown>
         </q-toolbar>
       </div>
     </q-header>
