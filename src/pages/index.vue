@@ -11,7 +11,9 @@
           </q-btn>
           <q-space />
           <div class="user">
-            <div class="text-h6 text-center navUsername"> {{ this.user.name }} </div>
+            <div class="text-h6 text-center navUsername">
+              {{ this.user.name }}
+            </div>
           </div>
           <q-btn
             flat
@@ -28,7 +30,7 @@
                     color="amber"
                     label="HISTORY"
                     push
-                    @click="$router.push('/history')"
+                    @click="goHistoryPage()"
                     size="md"
                     v-close-popup
                   />
@@ -48,6 +50,7 @@
         </q-toolbar>
       </div>
     </q-header>
+    <backgroundDisplay></backgroundDisplay>
 
     <q-page-container style="padding-top: 0">
       <div class="context">
@@ -74,8 +77,10 @@
               </q-card-section>
 
               <q-card-section>
-                <div class="q-pa-md" style="text-align:center;">
-                  <div style="font-weight:bold;font-size:50px">{{ dataImage.shortcode }}</div>
+                <div class="q-pa-md" style="text-align: center">
+                  <div style="font-weight: bold; font-size: 50px">
+                    {{ dataImage.shortcode }}
+                  </div>
                   <!-- <q-img
                     src="../images/image_1.jpg"
                     alt=""
@@ -84,8 +89,7 @@
                     height="auto"
                   /> -->
                 </div>
-                <div class="imgID">
-                </div>
+                <div class="imgID"></div>
               </q-card-section>
             </q-card>
           </div>
@@ -145,107 +149,123 @@
 </template>
 
 <script>
-import { QSpinnerFacebook } from 'quasar';
-import { Dialog } from 'quasar'
-import Axios from 'axios';
+import { QSpinnerFacebook } from "quasar";
 import { mapGetters } from "vuex";
+import backgroundDisplay from "../components/login_animation";
+import Axios from "axios";
 
 export default {
-  computed:{
+  computed: {
     ...mapGetters({
-      user_login: "user_login/user_login",
-      user_id: "user_id/user_id"
+      user_email: "user_email/user_email",
+      user_id: "user_id/user_id",
     }),
   },
-  data(){
-    return {
-      config:{
-        people:3
-      },
-      user:{
-        _id:null,
-        name:null,
-      },
-      dataImage:{
-        _id:null,
-        shortcode:null,
-      },
-      taskImage:{
-        _id:null,
-        shortcode:null,
-        status:null,
-        process:null,
-      },
-      taskSuccess:{
-        _id:null,
-        shortcode:null,
-        caption:null,
-        time_start:null,
-        time_stop:null,
-        user_id:null,
-        task_id:null,
-      }
-    }
+  components: {
+    backgroundDisplay,
   },
-  async mounted(){
+  data() {
+    return {
+      config: {
+        people: 2,
+      },
+      user: {
+        _id: null,
+        name: null,
+      },
+      dataImage: {
+        _id: null,
+        shortcode: null,
+      },
+      taskImage: {
+        _id: null,
+        shortcode: null,
+        status: null,
+        process: null,
+      },
+      taskSuccess: {
+        _id: null,
+        shortcode: null,
+        caption: null,
+        time_start: null,
+        time_stop: null,
+        user_id: null,
+        task_id: null,
+      },
+    };
+  },
+  async mounted() {
     await this.setUserData();
     await this.initState();
-    await this.resetStatus();
   },
-  methods:{
-    async initState(){
+  methods: {
+    async initState() {
       this.showLoading();
-      if(await this.checkDone()){
-        if(await this.getImageByUser()){
-          await this.updateStatusTask(true);
-          await this.setImageData();
-          this.onTimeout();
-        }else{
+      if ((this.user_id != null) & (this.user_id != "")) {
+        if (await this.checkDone()) {
+          if (await this.getImageByUser()) {
+            await this.updateStatusTask(true, Date.now());
+            await this.setImageData();
+            this.onTimeout();
+          } else {
+            this.onTimeout();
+            this.showMessage();
+          }
+        } else {
           this.onTimeout();
           this.showMessage();
         }
-      }else{
+      } else {
         this.onTimeout();
-        this.showMessage();
+        this.$router.push("/");
       }
     },
-    async setUserData(){
+    async setUserData() {
       this.user.name = await this.user_login;
       this.user._id = await this.user_id;
     },
     async checkDone() {
       try {
-        const responseImage = await Axios.get('https://testlaberu3-uag2fgef3q-as.a.run.app/image-data/getCountImage')
-        const responseTaskImage = await Axios.get('https://testlaberu3-uag2fgef3q-as.a.run.app/task-image/getCountTaskSuccess')
-        if(responseTaskImage.data < responseImage.data){
+        const responseImage = await Axios.get(
+          "http://localhost:8080/image-data/getCountImage"
+        );
+        const responseTaskImage = await Axios.get(
+          "http://localhost:8080/task-image/getCountTaskSuccess"
+        );
+        if (responseTaskImage.data < responseImage.data) {
+          await this.resetStatusTask();
           return true;
-        }else{
+        } else {
           return false;
         }
       } catch (error) {
         console.log(error);
       }
     },
-    async getImageByUser(){
+    async getImageByUser() {
       try {
-        const response = await Axios.get(`https://testlaberu3-uag2fgef3q-as.a.run.app/task-image/findImage/${this.user._id}`);
+        const response = await Axios.get(
+          `http://localhost:8080/task-image/findImage/${this.user._id}`
+        );
 
-        if(response.data[0] != null){
+        if (response.data[0] != null) {
           this.taskImage._id = response.data[0]._id;
           this.taskImage.shortcode = response.data[0].shortcode;
           this.taskImage.status = response.data[0].status;
           this.taskImage.process = response.data[0].process;
           return true;
-        }else{
-          return false
+        } else {
+          return false;
         }
       } catch (error) {
         console.log(error);
       }
     },
-    async setImageData(){
+    async setImageData() {
       try {
-        const response = await Axios.get(`https://testlaberu3-uag2fgef3q-as.a.run.app/image-data/${this.taskImage.shortcode}`);
+        const response = await Axios.get(
+          `http://localhost:8080/image-data/${this.taskImage.shortcode}`
+        );
         this.dataImage._id = response.data[0]._id;
         this.dataImage.shortcode = response.data[0].shortcode;
         this.taskSuccess.time_start = Date.now();
@@ -254,101 +274,113 @@ export default {
         console.log(error);
       }
     },
-    async updateStatusTask (inputStatus) {
+    async updateStatusTask(inputStatus, timeStamp) {
       try {
-        await Axios.put(`https://testlaberu3-uag2fgef3q-as.a.run.app/task-image/update_status/${this.taskImage._id}`,{
-          status:inputStatus
-        })
+        await Axios.put(
+          `http://localhost:8080/task-image/update_status/${this.taskImage._id}`,
+          {
+            time_start: timeStamp,
+            status: inputStatus,
+          }
+        );
       } catch (error) {
         console.log(error);
       }
+    },
+    async onSkip() {
+      await this.initState();
     },
     async onSave() {
       try {
-        await Axios.post(`https://testlaberu3-uag2fgef3q-as.a.run.app/task-success/create`,{
-            shortcode:this.taskImage.shortcode,
-            caption:this.taskSuccess.caption,
-            time_start:this.taskSuccess.time_start,
-            time_stop:Date.now(),
-            user_id: this.user._id,
-            task_id: this.taskImage._id,
-        })
-        
-        await this.updateStatusTask(false);
+        await Axios.post(`http://localhost:8080/task-success/create`, {
+          shortcode: this.taskImage.shortcode,
+          caption: this.taskSuccess.caption,
+          time_start: this.taskSuccess.time_start,
+          time_stop: Date.now(),
+          user_id: this.user._id,
+          task_id: this.taskImage._id,
+        });
+
+        await this.updateStatusTask(false, 0);
         await this.checkConfig();
         this.taskSuccess.caption = null;
-        this.initState()
-
+        this.initState();
       } catch (error) {
         console.log(error);
       }
     },
-    async checkConfig(){
-        const countSuccess = await Axios.get(`http://localhost:8080/task-success/findCountByShortcode/${this.taskImage.shortcode}`)
-        if(countSuccess.data == this.config.people){
-          try {
-            await Axios.put(`http://localhost:8080/task-image/update_process/${this.taskImage._id}`,{
-              status:true,
-              process:true
-            });
-          } catch (error) {
-            console.log(error);
-          }
-        }
-    },
-    async onSkip(){
-        const currentTaskSkipID = this.taskImage._id;
-        await this.initState();
+    async checkConfig() {
+      const countSuccess = await Axios.get(
+        `http://localhost:8080/task-success/findCountByShortcode/${this.taskImage.shortcode}`
+      );
+      if (countSuccess.data == this.config.people) {
         try {
-          await Axios.put(`https://testlaberu3-uag2fgef3q-as.a.run.app/task-image/update_status/${currentTaskSkipID}`,{
-            status:false
-          })
+          await Axios.put(
+            `http://localhost:8080/task-image/update_process/${this.taskImage._id}`,
+            {
+              time_start: 0,
+              status: true,
+              process: true,
+            }
+          );
         } catch (error) {
           console.log(error);
         }
+      }
     },
-    async resetStatus(){
-      const taskImageID = this.taskImage._id;
-      window.addEventListener('beforeunload', event => {
-        Axios.put(`https://testlaberu3-uag2fgef3q-as.a.run.app/task-image/update_status/${taskImageID}`,{
-            status:false
-        })
-      })
+    async goHistoryPage() {
+      await this.updateStatusTask(false);
+      this.$router.push("/History");
     },
-    showLoading () {
+    async resetStatusTask() {
+      try {
+        await Axios.put("http://localhost:8080/task-image/reset_status_all", {
+          time_start: 0,
+          status: false,
+          process: false,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    showLoading() {
       this.$q.loading.show({
         spinner: QSpinnerFacebook,
-        spinnerColor: 'yellow',
+        spinnerColor: "yellow",
         spinnerSize: 180,
-        backgroundColor: 'blue-8',
-      })
+        backgroundColor: "blue-8",
+      });
     },
-    showMessage () {
-      this.$q.dialog({
-        title: 'Alert',
-        message: 'งานเสร๊จหมดแล้วจ้า ไม่มีงานให้ทำแล้ววววววว'
-      }).onOk(() => {
-        this.$router.push('/');
-      }).onCancel(() => {
-        this.$router.push('/');
-      }).onDismiss(() => {
-        this.$router.push('/');
-      })
+    showMessage() {
+      this.$q
+        .dialog({
+          title: "Alert",
+          message: "งานเสร๊จหมดแล้วจ้า ไม่มีงานให้ทำแล้ววววววว",
+        })
+        .onOk(() => {
+          this.$router.push("/");
+        })
+        .onCancel(() => {
+          this.$router.push("/");
+        })
+        .onDismiss(() => {
+          this.$router.push("/");
+        });
     },
-    onTimeout () {
-        this.timer = setTimeout(() => {
-        this.$q.loading.hide()
-        this.timer = void 0
-      }, 500)
+    onTimeout() {
+      this.timer = setTimeout(() => {
+        this.$q.loading.hide();
+        this.timer = void 0;
+      }, 500);
     },
   },
-  beforeDestroy () {
+  beforeDestroy() {
     if (this.timer !== void 0) {
-      clearTimeout(this.timer)
-      this.$q.loading.hide()
+      clearTimeout(this.timer);
+      this.$q.loading.hide();
     }
   },
-}
+};
 </script>
 
 <style>

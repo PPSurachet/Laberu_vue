@@ -19,31 +19,11 @@
             class="text-blue-grey-7"
             size="1.5rem"
           >
-            <q-list>
-              <q-item clickable v-close-popup>
-                <q-item-section>
-                  <q-item-label>Photos</q-item-label>
-                </q-item-section>
-              </q-item>
-
-              <q-item clickable v-close-popup>
-                <q-item-section>
-                  <q-item-label>Videos</q-item-label>
-                </q-item-section>
-              </q-item>
-
-              <q-item clickable v-close-popup>
-                <q-item-section>
-                  <q-item-label>Articles</q-item-label>
-                </q-item-section>
-              </q-item>
-            </q-list>
           </q-btn-dropdown>
         </q-toolbar>
       </div>
     </q-header>
-    <backgroundDisplay>
-    </backgroundDisplay>
+    <backgroundDisplay></backgroundDisplay>
 
     <q-page-container style="padding-top: 0">
       <div class="context">
@@ -67,12 +47,24 @@
                   ลงชื่อเข้าใช้
                 </div>
                 <q-form>
-                  <q-input square clearable type="email" label="Email" v-model="email">
+                  <q-input
+                    square
+                    clearable
+                    type="email"
+                    label="Email    "
+                    v-model="email"
+                  >
                     <template v-slot:prepend>
                       <q-icon name="email" />
                     </template>
                   </q-input>
-                  <q-input square clearable type="password" label="Password" v-model="password">
+                  <q-input
+                    square
+                    clearable
+                    type="password"
+                    label="Password"
+                    v-model="password"
+                  >
                     <template v-slot:prepend>
                       <q-icon name="lock" />
                     </template>
@@ -91,7 +83,7 @@
                     class="q-mt-xs"
                     outline
                     rounded
-                    @click="checkLogin()"
+                    @click="onLogin()"
                     style="width: 300px"
                     color="primary"
                     label="Sign in"
@@ -102,7 +94,7 @@
                   <q-btn round color="indigo-7">
                     <q-icon name="fab fa-facebook-f" size="1.5rem" />
                   </q-btn>
-                  <q-btn round color="red-8">
+                  <q-btn round color="red-8" @click="onGmail()">
                     <q-icon name="fab fa-google-plus-g" size="1.5rem" />
                   </q-btn>
                 </div>
@@ -121,47 +113,74 @@
 </template>
 
 <script>
-import backgroundDisplay from '../components/login_animation'
-import imageDisplay from '../components/login_image'
-import { mapGetters } from "vuex";
+import backgroundDisplay from "../components/login_animation";
+import imageDisplay from "../components/login_image";
 import { mapActions } from "vuex";
 export default {
   components: {
     backgroundDisplay,
-    imageDisplay,
+    imageDisplay
   },
-  // computed:{
-  //   ...mapGetters({
-  //     user_login: "user_login/user_login"
-  //   })
-  // },
-  data(){
-    return{
-      email:"",
-      password:"",
-    }
+  data() {
+    return {
+      email: "",
+      password: ""
+    };
   },
-  methods:{
+  methods: {
     ...mapActions({
-      setUserLogin: "user_login/setUserLogin",
-      setUserID:"user_id/setUserID"
-      
+      setUserEmail: "user_email/setUserEmail",
+      setUserID: "user_id/setUserID",
+      setUserUID:"user_uid/setUserUID",
     }),
-    async checkLogin(){
-      const response = await this.$axios.get(`https://testlaberu3-uag2fgef3q-as.a.run.app/user/check_login/${this.email}/${this.password}`)
-      if(response.data[0].length != 0){
+    async onLogin(){
+      this.$auth.signInWithEmailAndPassword(this.email, this.password).catch(error => {
+        this.$q.notify({
+          color: 'red-5',
+          textColor: 'white',
+          icon: 'warning',
+          message: error.message
+        });
+      });
 
-        const user_login = { email: this.email, };
-        const user_id = { id: response.data[0]._id, };
+      this.$auth.onAuthStateChanged(user => {
+        if(user != null){
+          this.setUserUID({ uid: user.uid });
+          this.setUserEmail({ email: user.email });
+          this.checkLogin(user.uid);
+        };
+      })
+    },
+    async onGmail(){
+      const provider = new this.$firebase.auth.GoogleAuthProvider();
+      this.$auth.signInWithPopup(provider).then((result) => {
+        var user = result.user;
+        if(user != null){
+          this.setUserUID({ uid: user.uid });
+          this.setUserEmail({ email: user.email });
+          this.checkLogin(user.uid);
+        }
+      }).catch((error) => {
+        var errorMessage = error.message;
+        console.log(errorMessage);
+      });
+    },
+    async checkLogin(uid) {
+      try {
+          const response = await this.$axios.get(`http://localhost:8080/user/check_login/${uid}`);
 
-        this.setUserLogin(user_login);
-        this.setUserID(user_id);
-        
-        this.$router.push('/Index');
+          if (response.data[0] != null) {
+            this.setUserID({ id: response.data[0]._id });
+            this.$router.push("/index");
+          }else{
+            this.$router.push('/register')
+          }
+      } catch (error) {
+        console.log(error);
       }
     }
   }
-}
+};
 </script>
 
 <style>

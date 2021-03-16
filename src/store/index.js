@@ -3,7 +3,8 @@ import Vuex from 'vuex'
 
 // import example from './module-example'
 import user_id from './data/user_id';
-import user_login from './data/user_login';
+import user_email from './data/user_email';
+import user_uid from './data/user_uid';
 
 Vue.use(Vuex)
 
@@ -21,7 +22,8 @@ export default function (/* { ssrContext } */) {
     modules: {
       // example
       user_id,
-      user_login,
+      user_email,
+      user_uid,
     },
 
     // enable strict mode (adds overhead!)

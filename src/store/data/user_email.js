@@ -3,13 +3,13 @@ const state = {
 }
 
 const getters = {
-    user_login: (state, getters, rootState) => {
+    user_email: (state, getters, rootState) => {
         return state.email;
     }
 }
 
 const actions = {
-    setUserLogin: ({ commit, state }, payload) => {
+    setUserEmail: ({ commit, state }, payload) => {
         commit('SET_EMAIL', payload.email)
     }
 }

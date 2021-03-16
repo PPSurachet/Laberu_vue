@@ -9,6 +9,9 @@ const routes = [
         path: '/history', component: () => import('pages/History.vue')
     },
     {
+        path: '/register', component: () => import('pages/Register.vue')
+    },
+    {
         path: '*',
         component: () => import('pages/Error404.vue')
     }
