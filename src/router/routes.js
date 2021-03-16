@@ -23,6 +23,11 @@ const routes = [{
         import('pages/Profile.vue')
 },
 {
+    path: '/tutorial',
+    component: () =>
+        import('pages/Tutorial.vue')
+},
+{
     path: '*',
     component: () =>
         import('pages/Error404.vue')
