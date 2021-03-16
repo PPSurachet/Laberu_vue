@@ -1,20 +1,29 @@
-/* app global css */
-
-html, body{
-  width: 100%;
-  margin: 0;
-  padding: 0;
+.body--light {
+  background-color: #e6e8ea;
+  height: auto;
 }
 
-.parallax{
-  height: calc(50vw - 20vh);
+.forgetPW{
+  text-decoration: underline;
+  color: rgb(106, 106, 226);
 }
 
-.area {
-  background: #e6e8ea;
-  background: -webkit-linear-gradient(to left, #8f94fb, #4e54c8);
+.txtInput{
   width: 100%;
-  height: 100vh;
+}
+
+.hiddenIcon{
+  text-align: end;
+  text-align: right;
+}
+
+.loginBtn{
+  display: block;
+  width: 100%;
+  height: 3rem;
+  border: none;
+  padding: 0px 28px;
+  cursor: pointer;
 }
 
 .circles {

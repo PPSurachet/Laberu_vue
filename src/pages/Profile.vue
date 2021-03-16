@@ -4,9 +4,9 @@
       <div class="text-white toolbarT">
         <q-toolbar class="row full-height justify-center">
           <q-btn flat @click="$router.push('/index')">
-            <q-icon name="laberu" />
-            <q-toolbar-title class="titleName"
-              ><strong>LABERU.AI</strong>
+            <q-icon name="img:../icons/icon.png" size="3rem" />
+            <q-toolbar-title class="titleName" style="padding: 0px">
+              <strong>LABERU.AI</strong>
             </q-toolbar-title>
           </q-btn>
           <q-space />
@@ -23,29 +23,6 @@
             class="text-blue-grey-7"
             size="20px"
           >
-            <q-menu touch-position>
-              <q-list style="min-width: 100px">
-                <q-item v-close-popup>
-                  <q-btn
-                    color="amber"
-                    label="HISTORY"
-                    push
-                    @click="$router.push('/profile')"
-                    size="md"
-                    v-close-popup
-                  />
-                </q-item>
-                <q-item v-close-popup>
-                  <q-btn
-                    color="red"
-                    label="Logout"
-                    push
-                    size="md"
-                    v-close-popup
-                  />
-                </q-item>
-              </q-list>
-            </q-menu>
           </q-btn>
         </q-toolbar>
       </div>
@@ -69,13 +46,13 @@
                 </div>
               </div>
               <div class="row">
-                <div class="col-2 paddingAge">
+                <div class="col-2 paddingCol">
                   <div class="profileBG">{{ this.userData.age }}</div>
                 </div>
-                <div class="col-4 paddingTel">
+                <div class="col-4 paddingCol">
                   <div class="profileBG">{{ this.userData.phone_number }}</div>
                 </div>
-                <div class="col-6 paddingEmail">
+                <div class="col-6 paddingCol">
                   <div class="profileBG">{{ this.userData.email }}</div>
                 </div>
               </div>
@@ -175,21 +152,25 @@ export default {
   text-align: right;
   font-weight: bold;
   font-size: 14px;
+  color: #4f4b4b;
 }
 .acceptText {
   text-align: center;
   font-weight: bold;
   font-size: 14px;
+  color: #4f4b4b;
 }
 .declineText {
   text-align: right;
   font-weight: bold;
   font-size: 14px;
+  color: #4f4b4b;
 }
 .totalText {
   text-align: left;
   font-weight: bold;
   font-size: 14px;
+  color: #4f4b4b;
 }
 .profileBG {
   color: #6a6969;
@@ -215,7 +196,7 @@ export default {
   padding: 5px 30px 5px 30px;
 }
 .paddingCol {
-  padding: 15px 30px 15px 30px;
+  padding: 10px;
 }
 .profileCard {
   border-radius: 10px;

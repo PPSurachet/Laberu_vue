@@ -5,33 +5,24 @@
         <q-toolbar class="row full-height justify-center">
           <q-btn flat>
             <q-icon name="img:../icons/icon.png" size="3rem" />
-            <q-toolbar-title class="titleName"
-              ><strong>LABERU.AI</strong>
+            <q-toolbar-title class="titleName" style="padding: 0px">
+              <strong>LABERU.AI</strong>
             </q-toolbar-title>
           </q-btn>
           <q-space />
-
-          <q-btn-dropdown
-            flat
-            round
-            dense
-            icon="account_circle"
-            class="text-blue-grey-7"
-            size="1.5rem"
-          >
-          </q-btn-dropdown>
         </q-toolbar>
       </div>
     </q-header>
-    <backgroundDisplay></backgroundDisplay>
+    <backgroundDisplay> </backgroundDisplay>
 
-    <q-page-container style="padding-top: 0">
+    <q-page-container class="body" style="padding-top: 0">
       <div class="context">
         <div class="row justify-around">
+          <div class="col-lg-1"></div>
           <div class="col-lg-4">
-            <q-card-section align="center">
+            <q-card-section align="center" style="left: 3rem">
               <div class="text-h4">
-                Image Labeling
+                Image Labelling
                 <div class="text-subtitle2">by LABERU</div>
               </div>
               <div class="q-pa-md">
@@ -40,19 +31,23 @@
               </div>
             </q-card-section>
           </div>
-          <div class="col-lg-5 q-mt-md">
-            <q-card flat bordered class="jjCard">
+          <div class="col-lg-1"></div>
+          <div class="col-lg-4 q-mt-md">
+            <q-card flat bordered class="loginCard">
               <q-card-section>
                 <div class="text-h4 text-center q-mt-md q-mb-md">
                   ลงชื่อเข้าใช้
                 </div>
-                <q-form>
+                <q-form class="text-center">
                   <q-input
                     square
                     clearable
+                    class="txtInput"
                     type="email"
-                    label="Email    "
+                    label="Email"
                     v-model="email"
+                    name="email"
+                    id="email"
                   >
                     <template v-slot:prepend>
                       <q-icon name="email" />
@@ -61,51 +56,57 @@
                   <q-input
                     square
                     clearable
+                    class="txtInput"
                     type="password"
                     label="Password"
                     v-model="password"
+                    name="password"
+                    id="password"
                   >
                     <template v-slot:prepend>
-                      <q-icon name="lock" />
+                      <q-icon name="visibility" />
                     </template>
                   </q-input>
                   <div align="right" class="q-pa-sm">
                     <q-btn
                       flat
                       size="10px"
-                      class="text-grey-6"
+                      class="forgetPW"
                       label="Forgot password?"
+                      style="left: 15px"
                     />
                   </div>
                 </q-form>
                 <div align="center">
                   <q-btn
-                    class="q-mt-xs"
+                    class="q-mt-sm loginBtn"
                     outline
-                    rounded
                     @click="onLogin()"
-                    style="width: 300px"
                     color="primary"
                     label="Sign in"
                   />
                 </div>
-
                 <div class="text-center q-pa-md q-gutter-md">
                   <q-btn round color="indigo-7">
                     <q-icon name="fab fa-facebook-f" size="1.5rem" />
                   </q-btn>
-                  <q-btn round color="red-8" @click="onGmail()">
+                  <q-btn round color="red-8">
                     <q-icon name="fab fa-google-plus-g" size="1.5rem" />
                   </q-btn>
                 </div>
                 <q-separator inset />
-                <div class="q-mt-lg q-gutter-sm" align="center">
-                  <q-btn flat color="primary" label="Create an account" />
+                <div class="q-mt-sm q-gutter-sm" align="center">
+                  <q-btn
+                    class="createaccBtn"
+                    flat
+                    color="primary"
+                    label="Create an account"
+                  />
                 </div>
               </q-card-section>
-              <q-card-section> </q-card-section>
             </q-card>
           </div>
+          <div class="col-lg-2"></div>
         </div>
       </div>
     </q-page-container>
@@ -124,8 +125,8 @@ export default {
   },
   data() {
     return {
-      email: "",
-      password: "",
+      email: null,
+      password: null,
     };
   },
   mounted() {
@@ -141,6 +142,14 @@ export default {
     async onLogin() {
       this.$auth
         .signInWithEmailAndPassword(this.email, this.password)
+        .then((userCredential) => {
+          var user = userCredential.user;
+          if (user != null) {
+            this.setUserUID({ uid: user.uid });
+            this.setUserEmail({ email: user.email });
+            this.authStateChange();
+          }
+        })
         .catch((error) => {
           this.$q.notify({
             color: "red-5",
@@ -149,15 +158,14 @@ export default {
             message: error.message,
           });
         });
+    },
 
+    async authStateChange() {
       this.$auth.onAuthStateChanged((user) => {
-        if (user != null) {
-          this.setUserUID({ uid: user.uid });
-          this.setUserEmail({ email: user.email });
-          this.checkLogin(user.uid);
-        }
+        this.checkLogin(user.uid);
       });
     },
+
     async onGmail() {
       const provider = new this.$firebase.auth.GoogleAuthProvider();
       this.$auth
@@ -277,116 +285,84 @@ export default {
 </script>
 
 <style>
-.jjCard {
+.loginCard {
+  left: 6rem;
   height: 95%;
-  width: 70%;
+  padding: 0rem 1rem 2rem 1rem;
+  width: auto;
 }
 .toolbarT {
   height: 80px;
   background: #f8f8f8;
 }
-
 .titleName {
   color: #666877;
 }
-
 .shadow-box {
   width: 90px;
   height: 90px;
   margin: 25px;
 }
-
-.loginBtn {
-  width: 300px;
-  margin-top: 2rem;
-}
-
 .my-card {
   width: 400px;
   border-radius: 10px;
 }
-
 .context {
   width: 100%;
   position: absolute;
   top: 10rem;
 }
-
 .iconic {
   /* Group 65 */
   position: absolute;
   width: 30px;
   height: 30px;
-
   box-shadow: inset 0px 0px 62px rgba(0, 0, 0, 0.25);
-
   /* Ellipse 74 */
-
   position: absolute;
   width: 30px;
   height: 30px;
-
   background: #6d6b8a;
-
   /* Group 64 */
-
   position: absolute;
   width: 16.62px;
   height: 19.56px;
-
   /* Rectangle 128 */
-
   position: absolute;
   width: 1.8px;
   height: 15.21px;
-
   background: #d15eff;
   border-radius: 3px;
-
   /* Rectangle 130 */
-
   position: absolute;
   width: 1.8px;
   height: 10.37px;
-
   background: #d15eff;
   border-radius: 3px;
-
   /* Rectangle 132 */
-
   position: absolute;
   width: 1.8px;
   height: 6.57px;
-
   background: #d15eff;
   border-radius: 3px;
-
   /* Rectangle 129 */
-
   position: absolute;
   width: 1.8px;
   height: 5.65px;
-
   background: #d15eff;
   border-radius: 3px;
   transform: rotate(-90deg);
-
   /* Rectangle 131 */
-
   position: absolute;
   width: 2.18px;
   height: 16.62px;
-
   background: #d15eff;
   border-radius: 3px;
   transform: rotate(-90deg);
-
   /* Rectangle 133 */
-
   position: absolute;
   width: 1.8px;
   height: 16.62px;
-
   background: #d15eff;
   border-radius: 3px;
   transform: rotate(-90deg);
