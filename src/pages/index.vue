@@ -28,18 +28,9 @@
                 <q-item v-close-popup>
                   <q-btn
                     color="amber"
-                    label="HISTORY"
+                    label="Profile"
                     push
-                    @click="goHistoryPage()"
-                    size="md"
-                    v-close-popup
-                  />
-                </q-item>
-                <q-item v-close-popup>
-                  <q-btn
-                    color="red"
-                    label="Logout"
-                    push
+                    @click="goProfilePage()"
                     size="md"
                     v-close-popup
                   />
@@ -328,9 +319,9 @@ export default {
         }
       }
     },
-    async goHistoryPage() {
+    async goProfilePage() {
       await this.updateStatusTask(false);
-      this.$router.push("/History");
+      this.$router.push("/Profile");
     },
     async resetStatusTask() {
       try {

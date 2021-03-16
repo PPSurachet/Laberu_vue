@@ -116,70 +116,163 @@
 import backgroundDisplay from "../components/login_animation";
 import imageDisplay from "../components/login_image";
 import { mapActions } from "vuex";
+import Axios from "app/node_modules/axios";
 export default {
   components: {
     backgroundDisplay,
-    imageDisplay
+    imageDisplay,
   },
   data() {
     return {
       email: "",
-      password: ""
+      password: "",
     };
+  },
+  mounted() {
+    // this.insertData();
+    // this.insertTask();
   },
   methods: {
     ...mapActions({
       setUserEmail: "user_email/setUserEmail",
       setUserID: "user_id/setUserID",
-      setUserUID:"user_uid/setUserUID",
+      setUserUID: "user_uid/setUserUID",
     }),
-    async onLogin(){
-      this.$auth.signInWithEmailAndPassword(this.email, this.password).catch(error => {
-        this.$q.notify({
-          color: 'red-5',
-          textColor: 'white',
-          icon: 'warning',
-          message: error.message
+    async onLogin() {
+      this.$auth
+        .signInWithEmailAndPassword(this.email, this.password)
+        .catch((error) => {
+          this.$q.notify({
+            color: "red-5",
+            textColor: "white",
+            icon: "warning",
+            message: error.message,
+          });
         });
-      });
 
-      this.$auth.onAuthStateChanged(user => {
-        if(user != null){
-          this.setUserUID({ uid: user.uid });
-          this.setUserEmail({ email: user.email });
-          this.checkLogin(user.uid);
-        };
-      })
-    },
-    async onGmail(){
-      const provider = new this.$firebase.auth.GoogleAuthProvider();
-      this.$auth.signInWithPopup(provider).then((result) => {
-        var user = result.user;
-        if(user != null){
+      this.$auth.onAuthStateChanged((user) => {
+        if (user != null) {
           this.setUserUID({ uid: user.uid });
           this.setUserEmail({ email: user.email });
           this.checkLogin(user.uid);
         }
-      }).catch((error) => {
-        var errorMessage = error.message;
-        console.log(errorMessage);
       });
+    },
+    async onGmail() {
+      const provider = new this.$firebase.auth.GoogleAuthProvider();
+      this.$auth
+        .signInWithPopup(provider)
+        .then((result) => {
+          var user = result.user;
+          if (user != null) {
+            this.setUserUID({ uid: user.uid });
+            this.setUserEmail({ email: user.email });
+            this.checkLogin(user.uid);
+          }
+        })
+        .catch((error) => {
+          var errorMessage = error.message;
+          console.log(errorMessage);
+        });
     },
     async checkLogin(uid) {
       try {
-          const response = await this.$axios.get(`http://localhost:8080/user/check_login/${uid}`);
+        const response = await this.$axios.get(
+          `http://localhost:8080/user/check_login/${uid}`
+        );
 
-          if (response.data[0] != null) {
-            this.setUserID({ id: response.data[0]._id });
-            this.$router.push("/index");
-          }else{
-            this.$router.push('/register')
-          }
+        if (response.data[0] != null) {
+          this.setUserID({ id: response.data[0]._id });
+          this.$router.push("/index");
+        } else {
+          this.$router.push("/register");
+        }
       } catch (error) {
         console.log(error);
       }
-    }
-  }
+    },
+
+    async insertData() {
+      const arrayList = [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G",
+        "H",
+        "I",
+        "J",
+        "K",
+        "L",
+        "M",
+        "N",
+        "O",
+        "P",
+        "Q",
+        "R",
+        "S",
+        "T",
+        "U",
+        "V",
+        "W",
+        "X",
+        "Y",
+        "Z",
+        "a",
+        "b",
+        "c",
+        "d",
+        "e",
+        "f",
+        "g",
+        "h",
+        "i",
+        "j",
+        "k",
+        "l",
+        "m",
+        "n",
+        "o",
+        "p",
+        "q",
+        "r",
+        "s",
+        "t",
+        "u",
+        "v",
+        "w",
+        "x",
+        "y",
+        "z",
+      ];
+      for (let index = 0; index < arrayList.length; index++) {
+        Axios.post("http://localhost:8080/imag e-data/create", {
+          shortcode:
+            arrayList[index] +
+            arrayList[index] +
+            arrayList[index] +
+            arrayList[index],
+        });
+      }
+    },
+
+    async insertTask() {
+      const response = await Axios.get("http://localhost:8080/image-data");
+
+      for (let index = 0; index < response.data.length; index++) {
+        Axios.post("http://localhost:8080/task-image/create", {
+          shortcode: response.data[index].shortcode,
+          time_start: 0,
+          status: false,
+          process: false,
+        });
+      }
+
+      console.log("Success");
+    },
+  },
 };
 </script>
 
