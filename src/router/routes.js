@@ -12,6 +12,9 @@ const routes = [
         path: '/register', component: () => import('pages/Register.vue')
     },
     {
+        path: '/tutorial', component: () => import('pages/Tutorial.vue')
+    },
+    {
         path: '*',
         component: () => import('pages/Error404.vue')
     }

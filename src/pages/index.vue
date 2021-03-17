@@ -27,9 +27,18 @@
               <q-list style="min-width: 100px">
                 <q-item v-close-popup>
                   <q-btn
-                    color="red"
+                    color="amber"
                     label="Profile"
                     @click="$router.push('/profile')"
+                    size="md"
+                    v-close-popup
+                  />
+                </q-item>
+                <q-item v-close-popup>
+                  <q-btn
+                    color="red"
+                    label="Logout"
+                    @click="logout()"
                     size="md"
                     v-close-popup
                   />
@@ -51,13 +60,14 @@
                 <div class="row">
                   <div class="col">
                     <div class="imgNumber text-left" style="text-right">
-                      Image#01
+                      Image#{{ this.user.count }}
                     </div>
                   </div>
                   <div class="col text-right">
                     <q-btn
                       color="primary"
                       label="SKIP"
+                      @click="onSkip()"
                       class="btnSkip"
                       style="margin: 0 15px 0 0"
                     />
@@ -81,7 +91,9 @@
                     height="auto"
                   /> -->
                 </div>
-                <div class="imgID">Image ID : 00715AB</div>
+                <div class="imgID">
+                  Image ID : {{ this.taskImage.shortcode }}
+                </div>
               </q-card-section>
             </q-card>
           </div>
@@ -146,7 +158,7 @@
 </template>
 
 <script>
-import { QSpinnerFacebook } from "quasar";
+import { QSpinnerFacebook, QSpinnerHourglass } from "quasar";
 import { mapGetters } from "vuex";
 import backgroundDisplay from "../components/login_animation";
 import Axios from "axios";
@@ -163,12 +175,14 @@ export default {
   },
   data() {
     return {
+      configUrl: "https://laberu-uag2fgef3q-as.a.run.app",
       config: {
         people: 2,
       },
       user: {
         _id: null,
         name: null,
+        count: null,
       },
       dataImage: {
         _id: null,
@@ -201,6 +215,7 @@ export default {
       if ((this.user_id != null) & (this.user_id != "")) {
         if (await this.checkDone()) {
           if (await this.getImageByUser()) {
+            await this.getUserTaskSuccess();
             await this.updateStatusTask(true, Date.now());
             await this.setImageData();
             this.onTimeout();
@@ -224,10 +239,10 @@ export default {
     async checkDone() {
       try {
         const responseImage = await Axios.get(
-          "http://localhost:8080/image-data/getCountImage"
+          `${this.configUrl}/image-data/getCountImage`
         );
         const responseTaskImage = await Axios.get(
-          "http://localhost:8080/task-image/getCountTaskSuccess"
+          `${this.configUrl}/task-image/getCountTaskSuccess`
         );
         if (responseTaskImage.data < responseImage.data) {
           await this.resetStatusTask();
@@ -242,7 +257,7 @@ export default {
     async getImageByUser() {
       try {
         const response = await Axios.get(
-          `http://localhost:8080/task-image/findImage/${this.user._id}`
+          `${this.configUrl}/task-image/findImage/${this.user._id}`
         );
 
         if (response.data[0] != null) {
@@ -261,7 +276,7 @@ export default {
     async setImageData() {
       try {
         const response = await Axios.get(
-          `http://localhost:8080/image-data/${this.taskImage.shortcode}`
+          `${this.configUrl}/image-data/${this.taskImage.shortcode}`
         );
         this.dataImage._id = response.data[0]._id;
         this.dataImage.shortcode = response.data[0].shortcode;
@@ -274,7 +289,7 @@ export default {
     async updateStatusTask(inputStatus, timeStamp) {
       try {
         await Axios.put(
-          `http://localhost:8080/task-image/update_status/${this.taskImage._id}`,
+          `${this.configUrl}/task-image/update_status/${this.taskImage._id}`,
           {
             time_start: timeStamp,
             status: inputStatus,
@@ -284,13 +299,19 @@ export default {
         console.log(error);
       }
     },
+    async getUserTaskSuccess() {
+      const response = await Axios.get(
+        `${this.configUrl}/task-success/findByUser/${this.user._id}`
+      );
+      this.user.count = response.data.length;
+    },
     async onSkip() {
       await this.initState();
     },
     async onSave() {
       if (this.taskSuccess.caption != null) {
         try {
-          await Axios.post(`http://localhost:8080/task-success/create`, {
+          await Axios.post(`${this.configUrl}/task-success/create`, {
             shortcode: this.taskImage.shortcode,
             caption: this.taskSuccess.caption,
             time_start: this.taskSuccess.time_start,
@@ -317,12 +338,12 @@ export default {
     },
     async checkConfig() {
       const countSuccess = await Axios.get(
-        `http://localhost:8080/task-success/findCountByShortcode/${this.taskImage.shortcode}`
+        `${this.configUrl}/task-success/findCountByShortcode/${this.taskImage.shortcode}`
       );
       if (countSuccess.data == this.config.people) {
         try {
           await Axios.put(
-            `http://localhost:8080/task-image/update_process/${this.taskImage._id}`,
+            `${this.configUrl}/task-image/update_process/${this.taskImage._id}`,
             {
               time_start: 0,
               status: true,
@@ -340,7 +361,7 @@ export default {
     },
     async resetStatusTask() {
       try {
-        await Axios.put("http://localhost:8080/task-image/reset_status_all", {
+        await Axios.put(`${this.configUrl}/task-image/reset_status_all`, {
           time_start: 0,
           status: false,
           process: false,
@@ -349,12 +370,20 @@ export default {
         console.log(error);
       }
     },
+    logout() {
+      this.$auth
+        .signOut()
+        .then(() => {
+          this.$router.push("/");
+        })
+        .catch((error) => {});
+    },
     showLoading() {
       this.$q.loading.show({
-        spinner: QSpinnerFacebook,
-        spinnerColor: "yellow",
+        spinner: QSpinnerHourglass,
+        spinnerColor: "white",
         spinnerSize: 180,
-        backgroundColor: "blue-8",
+        backgroundColor: "indigo-11",
       });
     },
     showMessage() {
@@ -377,7 +406,7 @@ export default {
       this.timer = setTimeout(() => {
         this.$q.loading.hide();
         this.timer = void 0;
-      }, 500);
+      }, 600);
     },
   },
   beforeDestroy() {

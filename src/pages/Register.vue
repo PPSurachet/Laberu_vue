@@ -133,6 +133,7 @@ export default {
   },
   data() {
     return {
+      configUrl: "https://laberu-uag2fgef3q-as.a.run.app",
       fname: null,
       lname: null,
       age: null,
@@ -169,7 +170,7 @@ export default {
     },
     async createAccount() {
       try {
-        await Axios.post("http://localhost:8080/user/create", {
+        await Axios.post(`${this.configUrl}/user/create`, {
           fname: this.fname,
           lname: this.lname,
           email: this.user_email,
@@ -179,7 +180,7 @@ export default {
         }).then(async (response) => {
           this.onTimeout();
           await this.getUserID();
-          this.$router.push("/index");
+          this.$router.push("/tutorial");
         });
       } catch (error) {
         console.log(error);
@@ -188,7 +189,7 @@ export default {
     async getUserID() {
       try {
         const response = await this.$axios.get(
-          `http://localhost:8080/user/check_login/${this.user_uid}`
+          `${this.configUrl}/user/check_login/${this.user_uid}`
         );
         this.setUserID({ id: response.data[0]._id });
       } catch (error) {
@@ -207,7 +208,7 @@ export default {
       this.timer = setTimeout(() => {
         this.$q.loading.hide();
         this.timer = void 0;
-      }, 500);
+      }, 600);
     },
   },
   beforeDestroy() {

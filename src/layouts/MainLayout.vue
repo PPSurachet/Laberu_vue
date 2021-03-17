@@ -44,7 +44,7 @@
                     clearable
                     class="txtInput"
                     type="email"
-                    label="Email"
+                    label="E-mail"
                     v-model="email"
                     name="email"
                     id="email"
@@ -90,7 +90,7 @@
                   <q-btn round color="indigo-7">
                     <q-icon name="fab fa-facebook-f" size="1.5rem" />
                   </q-btn>
-                  <q-btn round color="red-8">
+                  <q-btn round color="red-8" @click="onGmail()">
                     <q-icon name="fab fa-google-plus-g" size="1.5rem" />
                   </q-btn>
                 </div>
@@ -125,6 +125,7 @@ export default {
   },
   data() {
     return {
+      configUrl: "https://laberu-uag2fgef3q-as.a.run.app",
       email: null,
       password: null,
     };
@@ -186,7 +187,7 @@ export default {
     async checkLogin(uid) {
       try {
         const response = await this.$axios.get(
-          `http://localhost:8080/user/check_login/${uid}`
+          `${this.configUrl}/user/check_login/${uid}`
         );
 
         if (response.data[0] != null) {
@@ -200,86 +201,86 @@ export default {
       }
     },
 
-    async insertData() {
-      const arrayList = [
-        "A",
-        "B",
-        "C",
-        "D",
-        "E",
-        "F",
-        "G",
-        "H",
-        "I",
-        "J",
-        "K",
-        "L",
-        "M",
-        "N",
-        "O",
-        "P",
-        "Q",
-        "R",
-        "S",
-        "T",
-        "U",
-        "V",
-        "W",
-        "X",
-        "Y",
-        "Z",
-        "a",
-        "b",
-        "c",
-        "d",
-        "e",
-        "f",
-        "g",
-        "h",
-        "i",
-        "j",
-        "k",
-        "l",
-        "m",
-        "n",
-        "o",
-        "p",
-        "q",
-        "r",
-        "s",
-        "t",
-        "u",
-        "v",
-        "w",
-        "x",
-        "y",
-        "z",
-      ];
-      for (let index = 0; index < arrayList.length; index++) {
-        Axios.post("http://localhost:8080/imag e-data/create", {
-          shortcode:
-            arrayList[index] +
-            arrayList[index] +
-            arrayList[index] +
-            arrayList[index],
-        });
-      }
-    },
+    // async insertData() {
+    //   const arrayList = [
+    //     "A",
+    //     "B",
+    //     "C",
+    //     "D",
+    //     "E",
+    //     "F",
+    //     "G",
+    //     "H",
+    //     "I",
+    //     "J",
+    //     "K",
+    //     "L",
+    //     "M",
+    //     "N",
+    //     "O",
+    //     "P",
+    //     "Q",
+    //     "R",
+    //     "S",
+    //     "T",
+    //     "U",
+    //     "V",
+    //     "W",
+    //     "X",
+    //     "Y",
+    //     "Z",
+    //     "a",
+    //     "b",
+    //     "c",
+    //     "d",
+    //     "e",
+    //     "f",
+    //     "g",
+    //     "h",
+    //     "i",
+    //     "j",
+    //     "k",
+    //     "l",
+    //     "m",
+    //     "n",
+    //     "o",
+    //     "p",
+    //     "q",
+    //     "r",
+    //     "s",
+    //     "t",
+    //     "u",
+    //     "v",
+    //     "w",
+    //     "x",
+    //     "y",
+    //     "z",
+    //   ];
+    //   for (let index = 0; index < arrayList.length; index++) {
+    //     Axios.post("${configUrl}/imag e-data/create", {
+    //       shortcode:
+    //         arrayList[index] +
+    //         arrayList[index] +
+    //         arrayList[index] +
+    //         arrayList[index],
+    //     });
+    //   }
+    // },
 
-    async insertTask() {
-      const response = await Axios.get("http://localhost:8080/image-data");
+    // async insertTask() {
+    //   const response = await Axios.get("${configUrl}/image-data");
 
-      for (let index = 0; index < response.data.length; index++) {
-        Axios.post("http://localhost:8080/task-image/create", {
-          shortcode: response.data[index].shortcode,
-          time_start: 0,
-          status: false,
-          process: false,
-        });
-      }
+    //   for (let index = 0; index < response.data.length; index++) {
+    //     Axios.post("${configUrl}/task-image/create", {
+    //       shortcode: response.data[index].shortcode,
+    //       time_start: 0,
+    //       status: false,
+    //       process: false,
+    //     });
+    //   }
 
-      console.log("Success");
-    },
+    //   console.log("Success");
+    // },
   },
 };
 </script>

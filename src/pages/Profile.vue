@@ -23,6 +23,19 @@
             class="text-blue-grey-7"
             size="20px"
           >
+            <q-menu touch-position>
+              <q-list style="min-width: 100px">
+                <q-item v-close-popup>
+                  <q-btn
+                    color="red"
+                    label="Logout"
+                    @click="logout()"
+                    size="md"
+                    v-close-popup
+                  />
+                </q-item>
+              </q-list>
+            </q-menu>
           </q-btn>
         </q-toolbar>
       </div>
@@ -104,6 +117,7 @@ export default {
   },
   data() {
     return {
+      configUrl: "https://laberu-uag2fgef3q-as.a.run.app",
       userData: {
         _id: null,
         fname: null,
@@ -125,7 +139,7 @@ export default {
   methods: {
     async getUserData() {
       const response = await Axios.get(
-        `http://localhost:8080/user/check_login/${this.user_uid}`
+        `${this.configUrl}/user/check_login/${this.user_uid}`
       );
 
       this.userData._id = response.data[0]._id;
@@ -138,10 +152,19 @@ export default {
 
     async getUserTaskSuccess() {
       const response = await Axios.get(
-        `http://localhost:8080/task-success/findByUser/${this.userData._id}`
+        `${this.configUrl}/task-success/findByUser/${this.userData._id}`
       );
       console.log(response.data.length);
       this.userData.countSuccess = response.data.length;
+    },
+
+    logout() {
+      this.$auth
+        .signOut()
+        .then(() => {
+          this.$router.push("/");
+        })
+        .catch((error) => {});
     },
   },
 };
