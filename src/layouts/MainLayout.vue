@@ -14,8 +14,8 @@
       </div>
     </q-header>
     <backgroundDisplay> </backgroundDisplay>
-
     <q-page-container class="body" style="padding-top: 0">
+
       <div class="context">
         <div class="row justify-around">
           <div class="col-lg-1"></div>
@@ -292,6 +292,8 @@ export default {
   padding: 0rem 1rem 2rem 1rem;
   width: auto;
 }
+
+
 .toolbarT {
   height: 80px;
   background: #f8f8f8;
