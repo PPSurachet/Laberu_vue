@@ -1,4 +1,11 @@
-/* app global css */
+
+@import url('https://fonts.googleapis.com/css2?family=Mitr:wght@400&display=swap');
+
+html,
+body {
+  font-family: "Mitr", sans-serif;
+}
+
 .body--light {
   background-color: #e6e8ea;
   height: auto;
@@ -11,6 +18,20 @@
 
 .txtInput{
   width: 100%;
+}
+
+.hiddenIcon{
+  text-align: end;
+  text-align: right;
+}
+
+.loginBtn{
+  display: block;
+  width: 100%;
+  height: 3rem;
+  border: none;
+  padding: 0px 28px;
+  cursor: pointer;
 }
 
 .hiddenIcon{
