@@ -125,14 +125,13 @@ export default {
   },
   data() {
     return {
-      configUrl: "https://laberu-uag2fgef3q-as.a.run.app",
+      config: {
+        url: "https://laberu-uag2fgef3q-as.a.run.app",
+        // url: "http://localhost:8080",
+      },
       email: null,
       password: null,
     };
-  },
-  mounted() {
-    // this.insertData();
-    // this.insertTask();
   },
   methods: {
     ...mapActions({
@@ -187,7 +186,7 @@ export default {
     async checkLogin(uid) {
       try {
         const response = await this.$axios.get(
-          `${this.configUrl}/user/check_login/${uid}`
+          `${this.config.url}/user/check_login/${uid}`
         );
 
         if (response.data[0] != null) {
@@ -200,87 +199,6 @@ export default {
         console.log(error);
       }
     },
-
-    // async insertData() {
-    //   const arrayList = [
-    //     "A",
-    //     "B",
-    //     "C",
-    //     "D",
-    //     "E",
-    //     "F",
-    //     "G",
-    //     "H",
-    //     "I",
-    //     "J",
-    //     "K",
-    //     "L",
-    //     "M",
-    //     "N",
-    //     "O",
-    //     "P",
-    //     "Q",
-    //     "R",
-    //     "S",
-    //     "T",
-    //     "U",
-    //     "V",
-    //     "W",
-    //     "X",
-    //     "Y",
-    //     "Z",
-    //     "a",
-    //     "b",
-    //     "c",
-    //     "d",
-    //     "e",
-    //     "f",
-    //     "g",
-    //     "h",
-    //     "i",
-    //     "j",
-    //     "k",
-    //     "l",
-    //     "m",
-    //     "n",
-    //     "o",
-    //     "p",
-    //     "q",
-    //     "r",
-    //     "s",
-    //     "t",
-    //     "u",
-    //     "v",
-    //     "w",
-    //     "x",
-    //     "y",
-    //     "z",
-    //   ];
-    //   for (let index = 0; index < arrayList.length; index++) {
-    //     Axios.post("${configUrl}/imag e-data/create", {
-    //       shortcode:
-    //         arrayList[index] +
-    //         arrayList[index] +
-    //         arrayList[index] +
-    //         arrayList[index],
-    //     });
-    //   }
-    // },
-
-    // async insertTask() {
-    //   const response = await Axios.get("${configUrl}/image-data");
-
-    //   for (let index = 0; index < response.data.length; index++) {
-    //     Axios.post("${configUrl}/task-image/create", {
-    //       shortcode: response.data[index].shortcode,
-    //       time_start: 0,
-    //       status: false,
-    //       process: false,
-    //     });
-    //   }
-
-    //   console.log("Success");
-    // },
   },
 };
 </script>

@@ -87,12 +87,16 @@
                   </div>
                 </div>
                 <div class="col paddingCol">
-                  <div class="declineText">ปฏิเสธ : 0</div>
+                  <div class="declineText">
+                    ปฏิเสธ : {{ this.userData.countNotSuccess }}
+                  </div>
                 </div>
               </div>
               <div class="row">
                 <div class="col paddingCol">
-                  <div class="totalMoneyText">เป็นเงินสุทธิ : 1500 ฿</div>
+                  <div class="totalMoneyText">
+                    เป็นเงินสุทธิ : {{ this.userData.countSuccess * 0.75 }} ฿
+                  </div>
                 </div>
               </div>
             </div>
@@ -117,7 +121,10 @@ export default {
   },
   data() {
     return {
-      configUrl: "https://laberu-uag2fgef3q-as.a.run.app",
+      config: {
+        url: "https://laberu-uag2fgef3q-as.a.run.app",
+        // url: "http://localhost:8080",
+      },
       userData: {
         _id: null,
         fname: null,
@@ -126,6 +133,7 @@ export default {
         phone_number: null,
         email: null,
         countSuccess: null,
+        countNotSuccess: null,
       },
     };
   },
@@ -139,7 +147,7 @@ export default {
   methods: {
     async getUserData() {
       const response = await Axios.get(
-        `${this.configUrl}/user/check_login/${this.user_uid}`
+        `${this.config.url}/user/check_login/${this.user_uid}`
       );
 
       this.userData._id = response.data[0]._id;
@@ -151,11 +159,15 @@ export default {
     },
 
     async getUserTaskSuccess() {
-      const response = await Axios.get(
-        `${this.configUrl}/task-success/findByUser/${this.userData._id}`
+      const success = await Axios.get(
+        `${this.config.url}/task-success/findByUser/${this.userData._id}/true`
       );
-      console.log(response.data.length);
-      this.userData.countSuccess = response.data.length;
+
+      const notSuccess = await Axios.get(
+        `${this.config.url}/task-success/findByUser/${this.userData._id}/false`
+      );
+      this.userData.countSuccess = success.data;
+      this.userData.countNotSuccess = notSuccess.data;
     },
 
     logout() {
