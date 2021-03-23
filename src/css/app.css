@@ -33,7 +33,6 @@ body {
   padding: 0px 28px;
   cursor: pointer;
 }
-
 .hiddenIcon{
   text-align: end;
   text-align: right;
@@ -46,9 +45,9 @@ body {
   border: none;
   padding: 0px 28px;
   cursor: pointer;
-  
 
 }
+
 .circles {
   position: absolute;
   top: 0;

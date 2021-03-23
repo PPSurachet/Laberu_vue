@@ -121,11 +121,15 @@
                 </div>
               </q-card-section>
               <q-card-actions vertical>
+                
                 <div
                   class="q-pa-md"
                   style="max-width: 90% align-item-center"
                   row="100"
                 >
+                <q-form
+                  @submit="onSubmit"
+                  >
                   <q-input
                     filled
                     class="textDescribe"
@@ -446,6 +450,31 @@ import backgroundDisplay from '../components/login_animation'
 export default{
   components:{
     backgroundDisplay
+  },
+  data(){
+    return{
+    deciptionArea: null,
+    }
+  },
+  methods: {
+    onSubmit () {
+      if (this.accept !== true) {
+        this.$q.notify({
+          color: 'red-5',
+          textColor: 'white',
+          icon: 'warning',
+          message: 'You need to accept the license and terms first'
+        })
+      }
+      else {
+        this.$q.notify({
+          color: 'green-4',
+          textColor: 'white',
+          icon: 'cloud_done',
+          message: 'Submitted'
+        })
+      }
+    },
   }
 }
 </script>
