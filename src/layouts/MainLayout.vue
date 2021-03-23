@@ -87,9 +87,6 @@
                   />
                 </div>
                 <div class="text-center q-pa-md q-gutter-md">
-                  <q-btn round color="indigo-7">
-                    <q-icon name="fab fa-facebook-f" size="1.5rem" />
-                  </q-btn>
                   <q-btn round color="red-8" @click="onGmail()">
                     <q-icon name="fab fa-google-plus-g" size="1.5rem" />
                   </q-btn>
@@ -203,89 +200,5 @@ export default {
 };
 </script>
 
-<style>
-.loginCard {
-  left: 6rem;
-  height: 95%;
-  padding: 0rem 1rem 2rem 1rem;
-  width: auto;
-}
-
-
-.toolbarT {
-  height: 80px;
-  background: #f8f8f8;
-}
-.titleName {
-  color: #666877;
-}
-.shadow-box {
-  width: 90px;
-  height: 90px;
-  margin: 25px;
-}
-.my-card {
-  width: 400px;
-  border-radius: 10px;
-}
-.context {
-  width: 100%;
-  position: absolute;
-  top: 10rem;
-}
-.iconic {
-  /* Group 65 */
-  position: absolute;
-  width: 30px;
-  height: 30px;
-  box-shadow: inset 0px 0px 62px rgba(0, 0, 0, 0.25);
-  /* Ellipse 74 */
-  position: absolute;
-  width: 30px;
-  height: 30px;
-  background: #6d6b8a;
-  /* Group 64 */
-  position: absolute;
-  width: 16.62px;
-  height: 19.56px;
-  /* Rectangle 128 */
-  position: absolute;
-  width: 1.8px;
-  height: 15.21px;
-  background: #d15eff;
-  border-radius: 3px;
-  /* Rectangle 130 */
-  position: absolute;
-  width: 1.8px;
-  height: 10.37px;
-  background: #d15eff;
-  border-radius: 3px;
-  /* Rectangle 132 */
-  position: absolute;
-  width: 1.8px;
-  height: 6.57px;
-  background: #d15eff;
-  border-radius: 3px;
-  /* Rectangle 129 */
-  position: absolute;
-  width: 1.8px;
-  height: 5.65px;
-  background: #d15eff;
-  border-radius: 3px;
-  transform: rotate(-90deg);
-  /* Rectangle 131 */
-  position: absolute;
-  width: 2.18px;
-  height: 16.62px;
-  background: #d15eff;
-  border-radius: 3px;
-  transform: rotate(-90deg);
-  /* Rectangle 133 */
-  position: absolute;
-  width: 1.8px;
-  height: 16.62px;
-  background: #d15eff;
-  border-radius: 3px;
-  transform: rotate(-90deg);
-}
+<style scoped src="../css/main.css">
 </style>

@@ -1,0 +1,100 @@
+.exampleWay input {
+    font-size: 15px;
+    font-weight: 500;
+    opacity: 1;
+  }
+  .exampleWay {
+    height: 5rem;
+  }
+  .navUsername {
+    color: black;
+  }
+  .imgNumber {
+    padding: 5px 0 0 15px;
+    font-weight: bold;
+    font-size: 18px;
+  }
+  .imgID {
+    padding: 0 15px 0 0;
+    text-align: right;
+    font-size: 10px;
+  }
+  .detail {
+    padding: 5px 0 0 20px;
+    font-weight: bold;
+    font-size: 18px;
+  }
+  .ProfileIMG {
+    color: black;
+    padding: 0 0 0 50px;
+    font-size: 40px;
+  }
+  .iconIMG {
+    font-size: 50px;
+    padding: 0 0 0 50px;
+  }
+  .cardIMG {
+    width: 700px;
+    border-radius: 10px;
+  }
+  .cardText {
+    width: 500px;
+    border-radius: 10px;
+  }
+  .cardProfile {
+    margin: 30px 0 0 0;
+    width: 500px;
+    height: 200px;
+    border-radius: 10px;
+  }
+  .imgMain {
+    width: 100%;
+    border-radius: 5px;
+  }
+  .imgID {
+    margin: -10px 0 0 0;
+    font-size: 10px;
+  }
+  .q-pa-md {
+    padding: 16px 16px;
+    margin: -20px 0 0 0;
+  }
+  .btnSkip {
+    border-radius: 5px;
+    font-size: 12px;
+    width: 20%;
+    height: 90%;
+  }
+  .btnColor {
+    width: 90%;
+    background-color: #6bce2e;
+    color: white;
+  }
+  .textDescribe {
+    resize: none !important;
+  }
+  .q-textarea .q-field__native {
+    resize: none;
+    padding-top: 17px;
+    min-height: 52px;
+  }
+  .btnSave {
+    padding: 10px 10px 10px 10px;
+    text-align: center;
+  }
+  .toolbarT {
+    height: 80px;
+    background: #f8f8f8;
+  }
+  .titleName {
+    color: #666877;
+  }
+  .my-card {
+    width: 400px;
+    border-radius: 10px;
+  }
+  .context {
+    width: 100%;
+    position: absolute;
+    top: 10rem;
+  }
