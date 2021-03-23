@@ -442,6 +442,12 @@ export default {
     }
   },
 };
+import backgroundDisplay from '../components/login_animation'
+export default{
+  components:{
+    backgroundDisplay
+  }
+}
 </script>
 
 <style>
