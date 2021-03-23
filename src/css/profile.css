@@ -1,0 +1,81 @@
+.totalMoneyText {
+    text-align: right;
+    font-weight: bold;
+    font-size: 14px;
+    color: #4f4b4b;
+  }
+  .acceptText {
+    text-align: center;
+    font-weight: bold;
+    font-size: 14px;
+    color: #4f4b4b;
+  }
+  .declineText {
+    text-align: right;
+    font-weight: bold;
+    font-size: 14px;
+    color: #4f4b4b;
+  }
+  .totalText {
+    text-align: left;
+    font-weight: bold;
+    font-size: 14px;
+    color: #4f4b4b;
+  }
+  .profileBG {
+    color: #6a6969;
+    padding: 10px 10px 10px 10px;
+    border-radius: 10px;
+    background-color: #e3dcdc;
+  }
+  .profileLabel {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+  }
+  .navUsername {
+    color: black;
+  }
+  .paddingAge {
+    padding: 5px 0px 5px 30px;
+  }
+  .paddingTel {
+    padding: 5px 30px 5px 10px;
+  }
+  .paddingEmail {
+    padding: 5px 30px 5px 30px;
+  }
+  .paddingCol {
+    padding: 10px;
+  }
+  .profileCard {
+    border-radius: 10px;
+    width: 700px;
+    padding: 30px 30px 30px 30px;
+  }
+  .q-pa-md {
+    padding: 16px 16px;
+    margin: -20px 0 0 0;
+  }
+  .q-textarea .q-field__native {
+    resize: none;
+    padding-top: 17px;
+    min-height: 52px;
+  }
+  .toolbarT {
+    height: 80px;
+    background: #f8f8f8;
+  }
+  .titleName {
+    color: #666877;
+  }
+  .my-card {
+    width: 400px;
+    border-radius: 10px;
+  }
+  .context {
+    width: 100%;
+    position: absolute;
+    top: 10rem;
+  }
+  
