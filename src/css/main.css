@@ -1,0 +1,29 @@
+.loginCard {
+    left: 6rem;
+    height: 95%;
+    padding: 0rem 1rem 2rem 1rem;
+    width: auto;
+  }
+  
+  
+  .toolbarT {
+    height: 80px;
+    background: #f8f8f8;
+  }
+  .titleName {
+    color: #666877;
+  }
+  .shadow-box {
+    width: 90px;
+    height: 90px;
+    margin: 25px;
+  }
+  .my-card {
+    width: 400px;
+    border-radius: 10px;
+  }
+  .context {
+    width: 100%;
+    position: absolute;
+    top: 10rem;
+  }
