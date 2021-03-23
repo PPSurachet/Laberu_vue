@@ -76,20 +76,14 @@
               </q-card-section>
 
               <q-card-section>
-                <div
-                  class="text-center"
-                  style="font-weight: bold; font-size: 50px"
-                >
-                  {{ this.taskImage.shortcode }}
-                </div>
                 <div class="q-pa-md">
-                  <!-- <img
-                    src="../images/image_1.jpg"
+                  <img
+                    :src="this.image.url"
                     alt=""
                     class="imgMain"
                     width="100%"
                     height="auto"
-                  /> -->
+                  />
                 </div>
                 <div class="imgID">
                   Image ID : {{ this.taskImage.shortcode }}
@@ -110,11 +104,7 @@
                       >
                         <q-card style="padding: 0px 20px 10px 20px">
                           <q-card-section>
-                            ## Lorem ipsum dolor sit amet, consectetur
-                            adipisicing elit. Quidem, eius reprehenderit eos
-                            corrupti commodi magni quaerat ex numquam, dolorum
-                            officiis modi facere maiores architecto suscipit
-                            iste eveniet doloribus ullam aliquid.
+                            {{ this.dataImage.description_english }}
                           </q-card-section>
                         </q-card>
                       </q-expansion-item>
@@ -139,7 +129,7 @@
                   <q-input
                     filled
                     class="textDescribe"
-                    v-model="taskSuccess.caption"
+                    v-model="taskSuccess.description"
                     outlined
                     label="โปรดใส่คำอธิบายรูปภาพ"
                     type="textarea"
@@ -175,18 +165,27 @@ export default {
   },
   data() {
     return {
-      configUrl: "https://laberu-uag2fgef3q-as.a.run.app",
       config: {
-        people: 2,
+        url:"https://laberu-uag2fgef3q-as.a.run.app",
+        // url: "http://localhost:8080",
+        project_name: null,
+        baseImageUrl: null,
+        labelingCount: null,
+        labelType: null,
+        customerID: null,
       },
       user: {
         _id: null,
         name: null,
         count: null,
       },
+      image: {
+        url: null,
+      },
       dataImage: {
         _id: null,
         shortcode: null,
+        description_english: null,
       },
       taskImage: {
         _id: null,
@@ -197,7 +196,7 @@ export default {
       taskSuccess: {
         _id: null,
         shortcode: null,
-        caption: null,
+        description: null,
         time_start: null,
         time_stop: null,
         user_id: null,
@@ -205,10 +204,11 @@ export default {
       },
     };
   },
-  async mounted() {
-    await this.setUserData();
-    await this.initState();
-  },
+  // async mounted() {
+  //   await this.configProject();
+  //   await this.setUserData();
+  //   await this.initState();
+  // },
   methods: {
     async initState() {
       this.showLoading();
@@ -232,17 +232,26 @@ export default {
         this.$router.push("/");
       }
     },
+    async configProject() {
+      const configProject = await Axios.get(`${this.config.url}/project`);
+
+      this.config.project_name = configProject.data[0].project_name;
+      this.config.baseImageUrl = configProject.data[0].baseImageUrl;
+      this.config.labelingCount = configProject.data[0].labelingCount;
+      this.config.labelType = configProject.data[0].labelType;
+      this.customerID = configProject.data[0].customerID;
+    },
     async setUserData() {
-      this.user.name = await this.user_login;
-      this.user._id = await this.user_id;
+      this.user.name = this.user_login;
+      this.user._id = this.user_id;
     },
     async checkDone() {
       try {
         const responseImage = await Axios.get(
-          `${this.configUrl}/image-data/getCountImage`
+          `${this.config.url}/image-data/getCountImage`
         );
         const responseTaskImage = await Axios.get(
-          `${this.configUrl}/task-image/getCountTaskSuccess`
+          `${this.config.url}/task-image/getCountTaskSuccess`
         );
         if (responseTaskImage.data < responseImage.data) {
           await this.resetStatusTask();
@@ -257,10 +266,11 @@ export default {
     async getImageByUser() {
       try {
         const response = await Axios.get(
-          `${this.configUrl}/task-image/findImage/${this.user._id}`
+          `${this.config.url}/task-image/findImage/${this.user._id}`
         );
 
         if (response.data[0] != null) {
+          this.image.url = `${this.config.baseImageUrl}${response.data[0].shortcode}.jpg`;
           this.taskImage._id = response.data[0]._id;
           this.taskImage.shortcode = response.data[0].shortcode;
           this.taskImage.status = response.data[0].status;
@@ -276,10 +286,12 @@ export default {
     async setImageData() {
       try {
         const response = await Axios.get(
-          `${this.configUrl}/image-data/${this.taskImage.shortcode}`
+          `${this.config.url}/image-data/${this.taskImage.shortcode}`
         );
         this.dataImage._id = response.data[0]._id;
         this.dataImage.shortcode = response.data[0].shortcode;
+        this.dataImage.description_english =
+          response.data[0].description_english;
         this.taskSuccess.time_start = Date.now();
         return true;
       } catch (error) {
@@ -289,7 +301,7 @@ export default {
     async updateStatusTask(inputStatus, timeStamp) {
       try {
         await Axios.put(
-          `${this.configUrl}/task-image/update_status/${this.taskImage._id}`,
+          `${this.config.url}/task-image/update_status/${this.taskImage._id}`,
           {
             time_start: timeStamp,
             status: inputStatus,
@@ -301,49 +313,63 @@ export default {
     },
     async getUserTaskSuccess() {
       const response = await Axios.get(
-        `${this.configUrl}/task-success/findByUser/${this.user._id}`
+        `${this.config.url}/task-success/findByUser/${this.user._id}/true`
       );
-      this.user.count = response.data.length;
+      this.user.count = response.data;
     },
     async onSkip() {
       await this.initState();
     },
     async onSave() {
-      if (this.taskSuccess.caption != null) {
-        try {
-          await Axios.post(`${this.configUrl}/task-success/create`, {
-            shortcode: this.taskImage.shortcode,
-            caption: this.taskSuccess.caption,
-            time_start: this.taskSuccess.time_start,
-            time_stop: Date.now(),
-            user_id: this.user._id,
-            task_id: this.taskImage._id,
-          });
+      if (this.taskSuccess.description != null) {
+        if (
+          this.taskSuccess.description.split(" ").filter((item) => item != "")
+            .length >= 5
+        ) {
+          try {
+            await Axios.post(`${this.config.url}/task-success/create`, {
+              shortcode: this.taskImage.shortcode,
+              description: this.taskSuccess.description,
+              time_start: this.taskSuccess.time_start,
+              time_stop: Date.now(),
+              accept: true,
+              user_id: this.user._id,
+              task_id: this.taskImage._id,
+            });
 
-          await this.updateStatusTask(false, 0);
-          await this.checkConfig();
-          this.taskSuccess.caption = null;
-          this.initState();
-        } catch (error) {
-          console.log(error);
+            await this.updateStatusTask(false, 0);
+            await this.checkConfig();
+            this.taskSuccess.description = null;
+            this.initState();
+          } catch (error) {
+            console.log(error);
+          }
+        } else {
+          this.$q.notify({
+            color: "red-5",
+            textColor: "white",
+            icon: "warning",
+            message:
+              "กรุณาใส่จำนวนคำขั้นต่ำ 5 คำ และมีการเว้นวรรคระหว่างคำทุกคำ !!",
+          });
         }
       } else {
         this.$q.notify({
           color: "red-5",
           textColor: "white",
           icon: "warning",
-          message: "Please fill in the blank",
+          message: "กรุณากรอกข้อมูลในพื้นที่ที่กำหนด",
         });
       }
     },
     async checkConfig() {
       const countSuccess = await Axios.get(
-        `${this.configUrl}/task-success/findCountByShortcode/${this.taskImage.shortcode}`
+        `${this.config.url}/task-success/findCountByShortcode/${this.taskImage.shortcode}`
       );
-      if (countSuccess.data == this.config.people) {
+      if (countSuccess.data == Number(this.config.labelingCount)) {
         try {
           await Axios.put(
-            `${this.configUrl}/task-image/update_process/${this.taskImage._id}`,
+            `${this.config.url}/task-image/update_process/${this.taskImage._id}`,
             {
               time_start: 0,
               status: true,
@@ -361,7 +387,7 @@ export default {
     },
     async resetStatusTask() {
       try {
-        await Axios.put(`${this.configUrl}/task-image/reset_status_all`, {
+        await Axios.put(`${this.config.url}/task-image/reset_status_all`, {
           time_start: 0,
           status: false,
           process: false,
