@@ -204,11 +204,11 @@ export default {
       },
     };
   },
-  async mounted() {
-    await this.configProject();
-    await this.setUserData();
-    await this.initState();
-  },
+  // async mounted() {
+  //   await this.configProject();
+  //   await this.setUserData();
+  //   await this.initState();
+  // },
   methods: {
     async initState() {
       this.showLoading();

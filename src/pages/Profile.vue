@@ -140,10 +140,10 @@ export default {
   components: {
     backgroundDisplay,
   },
-  async mounted() {
-    await this.getUserData();
-    await this.getUserTaskSuccess();
-  },
+  // async mounted() {
+  //   await this.getUserData();
+  //   await this.getUserTaskSuccess();
+  // },
   methods: {
     async getUserData() {
       const response = await Axios.get(
