@@ -121,13 +121,11 @@
                 </div>
               </q-card-section>
               <q-card-actions vertical>
-                
                 <div
                   class="q-pa-md"
                   style="max-width: 90% align-item-center"
                   row="100"
                 >
-                
                   <q-input
                     filled
                     class="textDescribe"
@@ -155,6 +153,18 @@ import { mapGetters } from "vuex";
 import backgroundDisplay from "../components/login_animation";
 import Axios from "axios";
 
+import Vue from "vue";
+import IdleVue from "idle-vue";
+
+const eventsHub = new Vue();
+
+const options = {
+  eventEmitter: eventsHub,
+  idleTime: 1800000,
+};
+
+Vue.use(IdleVue, options);
+
 export default {
   computed: {
     ...mapGetters({
@@ -168,7 +178,7 @@ export default {
   data() {
     return {
       config: {
-        url:"https://laberu-uag2fgef3q-as.a.run.app",
+        url: "https://laberu-uag2fgef3q-as.a.run.app",
         // url: "http://localhost:8080",
         project_name: null,
         baseImageUrl: null,
@@ -206,11 +216,15 @@ export default {
       },
     };
   },
-  // async mounted() {
-  //   await this.configProject();
-  //   await this.setUserData();
-  //   await this.initState();
-  // },
+  async onIdle() {
+    await this.updateStatusTask(false, 0);
+    this.logout();
+  },
+  async mounted() {
+    await this.configProject();
+    await this.setUserData();
+    await this.initState();
+  },
   methods: {
     async initState() {
       this.showLoading();
@@ -324,36 +338,23 @@ export default {
     },
     async onSave() {
       if (this.taskSuccess.description != null) {
-        if (
-          this.taskSuccess.description.split(" ").filter((item) => item != "")
-            .length >= 5
-        ) {
-          try {
-            await Axios.post(`${this.config.url}/task-success/create`, {
-              shortcode: this.taskImage.shortcode,
-              description: this.taskSuccess.description,
-              time_start: this.taskSuccess.time_start,
-              time_stop: Date.now(),
-              accept: true,
-              user_id: this.user._id,
-              task_id: this.taskImage._id,
-            });
-
-            await this.updateStatusTask(false, 0);
-            await this.checkConfig();
-            this.taskSuccess.description = null;
-            this.initState();
-          } catch (error) {
-            console.log(error);
-          }
-        } else {
-          this.$q.notify({
-            color: "red-5",
-            textColor: "white",
-            icon: "warning",
-            message:
-              "กรุณาใส่จำนวนคำขั้นต่ำ 5 คำ และมีการเว้นวรรคระหว่างคำทุกคำ !!",
+        try {
+          await Axios.post(`${this.config.url}/task-success/create`, {
+            shortcode: this.taskImage.shortcode,
+            description: this.taskSuccess.description,
+            time_start: this.taskSuccess.time_start,
+            time_stop: Date.now(),
+            accept: true,
+            user_id: this.user._id,
+            task_id: this.taskImage._id,
           });
+
+          await this.updateStatusTask(false, 0);
+          await this.checkConfig();
+          this.taskSuccess.description = null;
+          this.initState();
+        } catch (error) {
+          console.log(error);
         }
       } else {
         this.$q.notify({
