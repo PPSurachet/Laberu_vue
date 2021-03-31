@@ -121,20 +121,15 @@
                 </div>
               </q-card-section>
               <q-card-actions vertical>
-                
                 <div
                   class="q-pa-md"
                   style="max-width: 90% align-item-center"
                   row="100"
                 >
-                
-                  <q-input
-                    filled
-                    class="textDescribe"
+                  <vue-tags-input
                     v-model="taskSuccess.description"
-                    outlined
-                    label="โปรดใส่คำอธิบายรูปภาพ"
-                    type="textarea"
+                    :tags="tags"
+                    @tags-changed="(newTags) => (tags = newTags)"
                   />
                   <div class="btnSave">
                     <q-btn class="btnColor" label="Save" @click="onSave()" />
@@ -154,6 +149,19 @@ import { QSpinnerFacebook, QSpinnerHourglass } from "quasar";
 import { mapGetters } from "vuex";
 import backgroundDisplay from "../components/login_animation";
 import Axios from "axios";
+import Vue from "vue";
+import IdleVue from "idle-vue";
+
+import VueTagsInput from "@johmun/vue-tags-input";
+
+const eventsHub = new Vue();
+
+const options = {
+  eventEmitter: eventsHub,
+  idleTime: 1800000,
+};
+
+Vue.use(IdleVue, options);
 
 export default {
   computed: {
@@ -163,12 +171,14 @@ export default {
     }),
   },
   components: {
+    VueTagsInput,
     backgroundDisplay,
   },
   data() {
     return {
+      tags: [],
       config: {
-        url:"https://laberu-uag2fgef3q-as.a.run.app",
+        url: "https://laberu-uag2fgef3q-as.a.run.app",
         // url: "http://localhost:8080",
         project_name: null,
         baseImageUrl: null,
@@ -198,13 +208,17 @@ export default {
       taskSuccess: {
         _id: null,
         shortcode: null,
-        description: null,
+        description: "",
         time_start: null,
         time_stop: null,
         user_id: null,
         task_id: null,
       },
     };
+  },
+  async onIdle() {
+    await this.updateStatusTask(false, 0);
+    this.logout();
   },
   // async mounted() {
   //   await this.configProject();
@@ -323,37 +337,27 @@ export default {
       await this.initState();
     },
     async onSave() {
+      const newTags = [];
+      this.tags.forEach((data) => newTags.push(data.text));
+      const desciptionTags = newTags.join(" ");
       if (this.taskSuccess.description != null) {
-        if (
-          this.taskSuccess.description.split(" ").filter((item) => item != "")
-            .length >= 5
-        ) {
-          try {
-            await Axios.post(`${this.config.url}/task-success/create`, {
-              shortcode: this.taskImage.shortcode,
-              description: this.taskSuccess.description,
-              time_start: this.taskSuccess.time_start,
-              time_stop: Date.now(),
-              accept: true,
-              user_id: this.user._id,
-              task_id: this.taskImage._id,
-            });
-
-            await this.updateStatusTask(false, 0);
-            await this.checkConfig();
-            this.taskSuccess.description = null;
-            this.initState();
-          } catch (error) {
-            console.log(error);
-          }
-        } else {
-          this.$q.notify({
-            color: "red-5",
-            textColor: "white",
-            icon: "warning",
-            message:
-              "กรุณาใส่จำนวนคำขั้นต่ำ 5 คำ และมีการเว้นวรรคระหว่างคำทุกคำ !!",
+        try {
+          await Axios.post(`${this.config.url}/task-success/create`, {
+            shortcode: this.taskImage.shortcode,
+            description: desciptionTags,
+            time_start: this.taskSuccess.time_start,
+            time_stop: Date.now(),
+            accept: true,
+            user_id: this.user._id,
+            task_id: this.taskImage._id,
           });
+          await this.updateStatusTask(false, 0);
+          await this.checkConfig();
+          this.taskSuccess.description = "";
+          this.tags = [];
+          this.initState();
+        } catch (error) {
+          console.log(error);
         }
       } else {
         this.$q.notify({

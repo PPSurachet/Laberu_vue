@@ -15,7 +15,6 @@
     </q-header>
     <backgroundDisplay> </backgroundDisplay>
     <q-page-container class="body" style="padding-top: 0">
-
       <div class="context">
         <div class="row justify-around">
           <div class="col-lg-1"></div>
@@ -114,7 +113,6 @@
 import backgroundDisplay from "../components/login_animation";
 import imageDisplay from "../components/login_image";
 import { mapActions } from "vuex";
-import Axios from "app/node_modules/axios";
 export default {
   components: {
     backgroundDisplay,
@@ -126,6 +124,7 @@ export default {
         url: "https://laberu-uag2fgef3q-as.a.run.app",
         // url: "http://localhost:8080",
       },
+      selectedTags: [],
       email: null,
       password: null,
     };

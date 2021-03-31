@@ -10,10 +10,15 @@
     "test": "echo \"No test specified\" && exit 0"
   },
   "dependencies": {
+    "@johmun/vue-tags-input": "^2.1.0",
     "@quasar/extras": "^1.0.0",
+    "@voerro/vue-tagsinput": "^2.6.0",
     "axios": "^0.18.1",
+    "bootstrap": "^4.6.0",
+    "bootstrap-vue": "^2.21.2",
     "core-js": "^3.6.5",
     "firebase": "^8.3.0",
+    "idle-vue": "^2.0.5",
     "quasar": "^1.0.0"
   },
   "devDependencies": {
