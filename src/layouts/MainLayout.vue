@@ -113,7 +113,6 @@
 import backgroundDisplay from "../components/login_animation";
 import imageDisplay from "../components/login_image";
 import { mapActions } from "vuex";
-
 export default {
   components: {
     backgroundDisplay,
@@ -125,6 +124,7 @@ export default {
         url: "https://laberu-uag2fgef3q-as.a.run.app",
         // url: "http://localhost:8080",
       },
+      selectedTags: [],
       email: null,
       password: null,
     };
