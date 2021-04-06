@@ -1,6 +1,6 @@
 const routes = [
     {
-        path: '/', component: () => import('pages/admin.vue'),
+        path: '/', component: () => import('layouts/MainLayout.vue'),
     },
     {
         path: '/index', component: () => import('pages/Index.vue')
@@ -13,6 +13,9 @@ const routes = [
     },
     {
         path: '/tutorial', component: () => import('pages/Tutorial.vue')
+    },
+    {
+        path: '/admin', component: () => import('pages/Admin.vue')
     },
     {
         path: '*',

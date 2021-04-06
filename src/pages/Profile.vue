@@ -106,7 +106,7 @@
               <div class="row">
                 <div class="col paddingCol">
                   <div class="totalMoneyText">
-                    เป็นเงินสุทธิ : {{ this.userData.countSuccess * 0.75 }} ฿
+                    เงินสุทธิ : {{ this.userData.countSuccess * 0.75 }} ฿
                   </div>
                 </div>
               </div>
