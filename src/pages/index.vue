@@ -29,7 +29,7 @@
                   <q-btn
                     class="profileBtn"
                     label="Profile"
-                    @click="$router.push('/profile')"
+                    @click="goProfilePage()"
                     size="md"
                     v-close-popup
                   />
@@ -126,7 +126,7 @@
                   style="max-width: 90% align-item-center"
                   row="100"
                 >
-                  <vue-tags-input 
+                  <vue-tags-input
                     v-model="taskSuccess.description"
                     :tags="tags"
                     @tags-changed="(newTags) => (tags = newTags)"
@@ -145,14 +145,13 @@
 </template>
 
 <script>
-import { QSpinnerFacebook, QSpinnerHourglass } from "quasar";
+import { QSpinnerHourglass } from "quasar";
 import { mapGetters } from "vuex";
-import backgroundDisplay from "../components/login_animation";
 import Axios from "axios";
 import Vue from "vue";
 import IdleVue from "idle-vue";
-
 import VueTagsInput from "@johmun/vue-tags-input";
+import backgroundDisplay from "../components/login_animation";
 
 const eventsHub = new Vue();
 
@@ -220,15 +219,15 @@ export default {
     await this.updateStatusTask(false, 0);
     this.logout();
   },
-  // async mounted() {
-  //   await this.configProject();
-  //   await this.setUserData();
-  //   await this.initState();
-  // },
+  async mounted() {
+    // await this.configProject();
+    // await this.setUserData();
+    // await this.initState();
+  },
   methods: {
     async initState() {
       this.showLoading();
-      if ((this.user_id != null) & (this.user_id != "")) {
+      if (this.user_id != null && this.user_id != "") {
         if (await this.checkDone()) {
           if (await this.getImageByUser()) {
             await this.getUserTaskSuccess();
@@ -339,25 +338,35 @@ export default {
     async onSave() {
       const newTags = [];
       this.tags.forEach((data) => newTags.push(data.text));
-      const desciptionTags = newTags.join(" ");
+      console.log(newTags);
       if (this.taskSuccess.description != null) {
-        try {
-          await Axios.post(`${this.config.url}/task-success/create`, {
-            shortcode: this.taskImage.shortcode,
-            description: desciptionTags,
-            time_start: this.taskSuccess.time_start,
-            time_stop: Date.now(),
-            accept: true,
-            user_id: this.user._id,
-            task_id: this.taskImage._id,
+        if (newTags.length >= 5) {
+          try {
+            const desciptionTags = newTags.join(" ");
+            await Axios.post(`${this.config.url}/task-success/create`, {
+              shortcode: this.taskImage.shortcode,
+              description: desciptionTags,
+              time_start: this.taskSuccess.time_start,
+              time_stop: Date.now(),
+              accept: true,
+              user_id: this.user._id,
+              task_id: this.taskImage._id,
+            });
+            await this.updateStatusTask(false, 0);
+            await this.checkConfig();
+            this.taskSuccess.description = "";
+            this.tags = [];
+            this.initState();
+          } catch (error) {
+            console.log(error);
+          }
+        } else {
+          this.$q.notify({
+            color: "red-5",
+            textColor: "white",
+            icon: "warning",
+            message: "กรุณากรอกอย่างน้อย 5 คำ",
           });
-          await this.updateStatusTask(false, 0);
-          await this.checkConfig();
-          this.taskSuccess.description = "";
-          this.tags = [];
-          this.initState();
-        } catch (error) {
-          console.log(error);
         }
       } else {
         this.$q.notify({
@@ -388,7 +397,7 @@ export default {
       }
     },
     async goProfilePage() {
-      await this.updateStatusTask(false);
+      await this.updateStatusTask(false, 0);
       this.$router.push("/Profile");
     },
     async resetStatusTask() {
@@ -402,7 +411,8 @@ export default {
         console.log(error);
       }
     },
-    logout() {
+    async logout() {
+      await this.updateStatusTask(false, 0);
       this.$auth
         .signOut()
         .then(() => {
@@ -451,10 +461,9 @@ export default {
 </script>
 
 <style scoped src="../css/index.css">
-vue-tags-input{
+vue-tags-input {
   background-color: rgb(0, 230, 57);
-    color: rgb(255, 255, 255);
-    
+  color: rgb(255, 255, 255);
 }
 </style>
 

@@ -14,135 +14,55 @@
       </div>
     </q-header>
     <backgroundDisplay></backgroundDisplay>
-    <q-page-container class="body" style="padding-top: 0">
-      <div class="row justify-center">
-        <div
-          class="col context adminTabs bg-white text-black shadow-2 q-mr-lg ml-lg"
-          style="max-height: 500px"
-        >
+
+    <div class="q-pa-md" style="padding: 8rem 12rem 0rem 12rem">
+      <div class="q-gutter-y-md" style="max-width: auto">
+        <q-card>
           <q-tabs
             v-model="tab"
             dense
+            class="text-grey"
             active-color="primary"
             indicator-color="primary"
             align="justify"
             narrow-indicator
           >
-            <q-tab name="userID" label="User ID" />
-            <q-tab name="randomImg" label="Random" />
+            <q-tab class="text-orange" name="users" label="User" />
+            <q-tab
+              class="text-teal text-h3"
+              name="images"
+              label="Coming Soon"
+            />
           </q-tabs>
+
           <q-separator />
+
           <q-tab-panels
             v-model="tab"
             animated
-            swipeable
-            vertical
-            transition-prev="jump-up"
-            transition-next="jump-up"
+            class="bg-white text-black"
+            transition-prev="scale"
+            transition-next="scale"
           >
-            <q-tab-panel name="userID">
-              <q-splitter v-model="splitterModel" :limits="[40, 100]">
-                <template v-slot:before>
-                  <div class="text-h4 q-mb-md">
-                    <div class="row items-center justify-center">
-                      User
-                      <q-input
-                        class="searchBox q-ml-md"
-                        v-model="search"
-                        rounded
-                        outlined
-                        placeholder="Search"
-                      >
-                        <template v-slot:append>
-                          <q-icon name="search" />
-                        </template>
-                      </q-input>
-                    </div>
-                  </div>
-                  <q-scroll-area
-                    :thumb-style="thumbStyle"
-                    :bar-style="barStyle"
-                    style="height: 320px"
-                  >
-                    <q-tabs
-                      v-model="tabs"
-                      vertical
-                      class="text-teal q-mr-lg ml-lg"
-                      v-for="n in 5"
-                      :key="n"
+            <q-tab-panel name="users">
+              <div class="row">
+                <div class="col bg-white rounded-borders">
+                  <div class="q-mr-md">
+                    <q-table
+                      style="box-shadow: none"
+                      :selected-rows-label="getTaskSuccessByUser"
+                      selection="single"
+                      :selected.sync="selected"
+                      :grid="$q.screen.md"
+                      :dense="$q.screen.lt.md"
+                      title="User"
+                      :data="user"
+                      :columns="columns"
+                      row-key="name"
+                      :filter="filter"
                     >
-                      <q-tab
-                        name="userid1"
-                        label="userid12345userid12345@gmail.com"
-                      />
-                      <q-separator />
-                      <q-tab name="userid2" label="userid2" />
-                      <q-separator />
-                      <q-tab name="userid3" label="userid3" />
-                      <q-separator />
-                    </q-tabs>
-                  </q-scroll-area>
-                </template>
-                <template v-slot:after>
-                  <q-tab-panels
-                    v-model="tabs"
-                    animated
-                    swipeable
-                    vertical
-                    transition-prev="jump-up"
-                    transition-next="jump-up"
-                  >
-                    <q-tab-panel name="userid1">
-                      <div class="text-h4 q-mb-md">Label Info</div>
-                      <p style="color: green">Image_ID : "1111111111"</p>
-                      <p style="color: blue">
-                        tags : {"xxxx","xxxxxxx","xxxxxxxxxx","xxxxx","xxxxxxx"}
-                      </p>
-                      <p style="color: red">dot : "xx/xx/xxxx"</p>
-                    </q-tab-panel>
-
-                    <q-tab-panel name="userid2">
-                      <div class="text-h4 q-mb-md">Label Info</div>
-                      <p style="color: green">Image_ID : "222222222"</p>
-                      <p style="color: blue">
-                        tags : {"xxxx","xxxxxxx","xxxxxxxxxx","xxxxx","xxxxxxx"}
-                      </p>
-                      <p style="color: red">dot : "xx/xx/xxxx"</p>
-                    </q-tab-panel>
-                    <q-tab-panel name="userid3">
-                      <div class="text-h4 q-mb-md">Label Info</div>
-                      <p style="color: green">Image_ID : "333333333"</p>
-                      <p style="color: blue">
-                        tags : {"xxxx","xxxxxxx","xxxxxxxxxx","xxxxx","xxxxxxx"}
-                      </p>
-                      <p style="color: red">dot : "xx/xx/xxxx"</p>
-                    </q-tab-panel>
-                  </q-tab-panels>
-                </template>
-              </q-splitter>
-            </q-tab-panel>
-
-            <q-tab-panel name="randomImg">
-              <q-splitter v-model="splitterModel" :limits="[40, 100]">
-                <template v-slot:before>
-                  <q-scroll-area
-                    :thumb-style="thumbStyle"
-                    :bar-style="barStyle"
-                    style="height: 350px"
-                  >
-                     <q-table
-      style="height: 400px"
-      title="Treats"
-      :data="data"
-      :columns="columns"
-      row-key="index"
-      virtual-scroll
-      :pagination.sync="pagination"
-      :rows-per-page-options="[0]"
-    >
                       <template v-slot:top-right>
                         <q-input
-                          borderless
                           dense
                           debounce="300"
                           v-model="filter"
@@ -154,155 +74,204 @@
                         </q-input>
                       </template>
                     </q-table>
+                  </div>
+                </div>
+                <q-separator vertical inset="true" />
+                <div class="col bg-white rounded-borders">
+                  <div class="row justify-between items-center q-mx-md">
+                    <div
+                      class="text-h6 text-center q-my-md"
+                      v-if="selected.length > 0"
+                    >
+                      Labelling By {{ selected[0].name }}
+                    </div>
+                    <div class="text-h6 text-center q-my-md" v-else>
+                      Labelling By
+                    </div>
+                    <div class="q-my-md">
+                      <q-btn
+                        dense
+                        round
+                        padding="sm"
+                        color="white"
+                        size="15px"
+                        icon="fas fa-random"
+                        class="text-grey-6"
+                        @click="RandomImageByUser()"
+                      />
+                    </div>
+                  </div>
+                  <q-scroll-area style="height: 450px" v-if="images != null">
+                    <div v-for="(image, index) in images" :key="image._id">
+                      <q-item clickable v-ripple @click="onDialog(index, null)">
+                        <q-item-section avatar>
+                          <q-avatar rounded>
+                            <img
+                              :src="
+                                config.baseImageUrl + image.shortcode + '.jpg'
+                              "
+                            />
+                          </q-avatar>
+                        </q-item-section>
+                        <q-item-section>{{ image.shortcode }}</q-item-section>
+                      </q-item>
+                    </div>
+                    <div v-if="card.image != null">
+                      <q-dialog v-model="card.status">
+                        <q-card class="my-card">
+                          <q-img
+                            :src="
+                              config.baseImageUrl +
+                              card.image.shortcode +
+                              '.jpg'
+                            "
+                          />
+                          <q-card-section>
+                            <div class="row no-wrap items-center">
+                              <div class="col text-h6">
+                                {{ card.image.description }}
+                              </div>
+                            </div>
+                          </q-card-section>
+                        </q-card>
+                      </q-dialog>
+                    </div>
                   </q-scroll-area>
-                </template>
-                <template v-slot:after>
-                  <q-tab-panels
-                    v-model="tabs"
-                    animated
-                    swipeable
-                    vertical
-                    transition-prev="jump-up"
-                    transition-next="jump-up"
-                  >
-                    <q-tab-panel name="userid1">
-                      <q-img src="../images/image_1.jpg"></q-img>
-                      <div class="text-h4 q-mb-md">Label Info</div>
-                      <p style="color: green">Image_ID : "1111111111"</p>
-                      <p style="color: blue">
-                        tags : {"xxxx","xxxxxxx","xxxxxxxxxx","xxxxx","xxxxxxx"}
-                      </p>
-                      <p style="color: red">dot : "xx/xx/xxxx"</p>
-                    </q-tab-panel>
-                    <q-tab-panel name="userid2">
-                      <q-img src="../images/image_1.jpg"></q-img>
-                      <div class="text-h4 q-mb-md">Label Info</div>
-                      <p style="color: green">Image_ID : "222222222"</p>
-                      <p style="color: blue">
-                        tags : {"xxxx","xxxxxxx","xxxxxxxxxx","xxxxx","xxxxxxx"}
-                      </p>
-                      <p style="color: red">dot : "xx/xx/xxxx"</p>
-                    </q-tab-panel>
-                    <q-tab-panel name="userid3">
-                      <q-img src="../images/image_1.jpg"></q-img>
-                      <div class="text-h4 q-mb-md">Label Info</div>
-                      <p style="color: green">Image_ID : "333333333"</p>
-                      <p style="color: blue">
-                        tags : {"xxxx","xxxxxxx","xxxxxxxxxx","xxxxx","xxxxxxx"}
-                      </p>
-                      <p style="color: red">dot : "xx/xx/xxxx"</p>
-                    </q-tab-panel>
-                  </q-tab-panels>
-                </template>
-              </q-splitter>
+                </div>
+              </div>
+            </q-tab-panel>
+
+            <q-tab-panel name="images">
+              <div class="text-h6 text-center">Coming Soon</div>
             </q-tab-panel>
           </q-tab-panels>
-        </div>
+        </q-card>
       </div>
-    </q-page-container>
+    </div>
   </q-layout>
 </template>
 <script>
+import Axios from "app/node_modules/axios";
 import backgroundDisplay from "../components/adminBG";
+import { mapGetters } from "vuex";
 export default {
+  computed: {
+    ...mapGetters({
+      user_email: "user_email/user_email",
+      user_id: "user_id/user_id",
+    }),
+  },
   components: {
     backgroundDisplay,
   },
   data() {
     return {
-      tab: "",
-      tabs: "",
-      splitterModel: 20,
-      search: "",
-      thumbStyle: {
-        right: "4px",
-        borderRadius: "5px",
-        backgroundColor: "#027be3",
-        width: "5px",
-        opacity: 0.75,
+      card: {
+        status: false,
+        image: null,
       },
-      barStyle: {
-        right: "2px",
-        borderRadius: "9px",
-        backgroundColor: "#C4C4C4",
-        width: "9px",
-        opacity: 0.2,
+      config: {
+        url: "https://laberu-uag2fgef3q-as.a.run.app",
+        // url: "http://localhost:8080",
+        project_name: null,
+        baseImageUrl: null,
+        labelingCount: null,
+        labelType: null,
+        customerID: null,
       },
       filter: "",
+      selected: [],
+      user: [],
+      tab: "users",
       columns: [
         {
-          name: "desc",
+          name: "email",
           required: true,
-          label: "Dessert (100g serving)",
           align: "left",
+          label: "Email",
           field: (row) => row.name,
           format: (val) => `${val}`,
           sortable: true,
         },
-      ],
-      data: [
         {
-          name: "Frozen Yogurt",
-          calories: 159,
-          fat: 6.0,
-          carbs: 24,
-        },
-        {
-          name: "Ice cream sandwich",
-          calories: 237,
-          fat: 9.0,
-          carbs: 37,
-        },
-        {
-          name: "Eclair",
-          calories: 262,
-          fat: 16.0,
-          carbs: 23,
-        },
-        {
-          name: "Cupcake",
-          calories: 305,
-          fat: 3.7,
-          carbs: 67,
-        },
-        {
-          name: "Gingerbread",
-          calories: 356,
-          fat: 16.0,
-          carbs: 49,
-        },
-        {
-          name: "Jelly bean",
-          calories: 375,
-          fat: 0.0,
-          carbs: 94,
-        },
-        {
-          name: "Lollipop",
-          calories: 392,
-          fat: 0.2,
-          carbs: 98,
-        },
-        {
-          name: "Honeycomb",
-          calories: 408,
-          fat: 3.2,
-          carbs: 87,
-        },
-        {
-          name: "Donut",
-          calories: 452,
-          fat: 25.0,
-          carbs: 51,
-        },
-        {
-          name: "KitKat",
-          calories: 518,
-          fat: 26.0,
-          carbs: 65,
+          name: "success",
+          required: true,
+          align: "left",
+          label: "Total",
+          field: (row) => row.total,
+          format: (val) => `${val}`,
+          sortable: true,
         },
       ],
+      images: null,
     };
+  },
+  async mounted() {
+    // await this.checkStatusAdmin();
+    await this.configProject();
+    await this.getUser();
+  },
+  methods: {
+    async checkStatusAdmin() {
+      if (this.user_email != "doublepor@gmail.com") {
+        this.$router.push("/");
+      }
+    },
+    async configProject() {
+      try {
+        const configProject = await Axios.get(`${this.config.url}/project`);
+
+        this.config.project_name = configProject.data[0].project_name;
+        this.config.baseImageUrl = configProject.data[0].baseImageUrl;
+        this.config.labelingCount = configProject.data[0].labelingCount;
+        this.config.labelType = configProject.data[0].labelType;
+        this.customerID = configProject.data[0].customerID;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async getUser() {
+      try {
+        const response = await Axios.get(`${this.config.url}/user`);
+
+        this.user = await Promise.all(
+          response.data.map(async (item) => {
+            const countSuccess = await Axios.get(
+              `${this.config.url}/task-success/findByUser/${item._id}/true`
+            );
+            return { name: item.email, total: countSuccess.data, id: item._id };
+          })
+        );
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async getTaskSuccessByUser() {
+      try {
+        const response = await Axios.get(
+          `${this.config.url}/task-success/findImageByUser/${this.selected[0].id}`
+        );
+        this.images = response.data;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async RandomImageByUser() {
+      try {
+        const response = await Axios.get(
+          `${this.config.url}/task-success/randomImageByUser/${this.selected[0].id}`
+        );
+        this.onDialog(-1, response.data[0]);
+      } catch (error) {}
+    },
+    onDialog(index, data) {
+      if (data != null) {
+        this.card.image = data;
+      } else {
+        this.card.image = this.images[index];
+      }
+      this.card.status = true;
+    },
   },
 };
 </script>

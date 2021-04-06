@@ -185,7 +185,9 @@ export default {
           `${this.config.url}/user/check_login/${uid}`
         );
 
-        if (response.data[0] != null) {
+        if (uid == "gBiqJh2jmNT5b5KDXQq9ep3YBf53") {
+          this.$router.push("/admin");
+        } else if (response.data[0] != null) {
           this.setUserID({ id: response.data[0]._id });
           this.$router.push("/index");
         } else {

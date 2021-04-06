@@ -48,11 +48,16 @@
           <q-card class="profileCard">
             <q-card-section>
               <div class="row items-center justify-between">
-                <q-btn @click="$router.push('/index')" round v-close-popup >
-                  <q-icon class="backBtn" name="img:../icons/unknown.png" size="3rem" v-close-popup />
+                <q-btn @click="returnIndexPage()" round v-close-popup>
+                  <q-icon
+                    class="backBtn"
+                    name="img:../icons/unknown.png"
+                    size="3rem"
+                    v-close-popup
+                  />
                 </q-btn>
-              <div class="profileLabel">ข้อมูลส่วนตัว</div>
-              <div style="width:64px;height:64px"></div>
+                <div class="profileLabel">ข้อมูลส่วนตัว</div>
+                <div style="width: 64px; height: 64px"></div>
               </div>
             </q-card-section>
             <div class="col-12">
@@ -75,11 +80,11 @@
                   <div class="profileBG">{{ this.userData.email }}</div>
                 </div>
               </div>
-              <div class="row">
+              <!-- <div class="row">
                 <div class="col paddingCol">
                   <div class="profileBG">???????????????????????</div>
                 </div>
-              </div>
+              </div> -->
 
               <div class="row">
                 <div class="col paddingCol">
@@ -101,7 +106,7 @@
               <div class="row">
                 <div class="col paddingCol">
                   <div class="totalMoneyText">
-                    เป็นเงินสุทธิ : {{ this.userData.countSuccess * 0.75 }} ฿
+                    เงินสุทธิ : {{ this.userData.countSuccess * 0.75 }} ฿
                   </div>
                 </div>
               </div>
@@ -146,10 +151,10 @@ export default {
   components: {
     backgroundDisplay,
   },
-  // async mounted() {
-  //   await this.getUserData();
-  //   await this.getUserTaskSuccess();
-  // },
+  async mounted() {
+    await this.getUserData();
+    await this.getUserTaskSuccess();
+  },
   methods: {
     async getUserData() {
       const response = await Axios.get(
@@ -176,6 +181,10 @@ export default {
       this.userData.countNotSuccess = notSuccess.data;
     },
 
+    async returnIndexPage() {
+      this.$router.push("/index");
+    },
+
     logout() {
       this.$auth
         .signOut()
@@ -189,5 +198,4 @@ export default {
 </script>
 
 <style scoped src="../css/profile.css">
-
 </style>
