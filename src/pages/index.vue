@@ -126,7 +126,7 @@
                   style="max-width: 90% align-item-center"
                   row="100"
                 >
-                  <vue-tags-input 
+                  <vue-tags-input
                     v-model="taskSuccess.description"
                     :tags="tags"
                     @tags-changed="(newTags) => (tags = newTags)"
@@ -220,9 +220,9 @@ export default {
     this.logout();
   },
   async mounted() {
-    await this.configProject();
-    await this.setUserData();
-    await this.initState();
+    // await this.configProject();
+    // await this.setUserData();
+    // await this.initState();
   },
   methods: {
     async initState() {
@@ -461,10 +461,9 @@ export default {
 </script>
 
 <style scoped src="../css/index.css">
-vue-tags-input{
+vue-tags-input {
   background-color: rgb(0, 230, 57);
-    color: rgb(255, 255, 255);
-    
+  color: rgb(255, 255, 255);
 }
 </style>
 

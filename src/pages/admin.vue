@@ -207,7 +207,7 @@ export default {
     };
   },
   async mounted() {
-    await this.checkStatusAdmin();
+    // await this.checkStatusAdmin();
     await this.configProject();
     await this.getUser();
   },
