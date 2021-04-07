@@ -2,7 +2,7 @@
   "name": "quasar_vue",
   "version": "0.0.1",
   "description": "A Quasar Framework app",
-  "productName": "Quasar App",
+  "productName": "Laberu",
   "author": "Doublepor <doublepor.pp@gmail.com>",
   "private": true,
   "scripts": {

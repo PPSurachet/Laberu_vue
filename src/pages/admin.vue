@@ -28,11 +28,7 @@
             narrow-indicator
           >
             <q-tab class="text-orange" name="users" label="User" />
-            <q-tab
-              class="text-teal text-h3"
-              name="images"
-              label="Coming Soon"
-            />
+            <q-tab class="text-teal text-h3" name="images" label="Image" />
           </q-tabs>
 
           <q-separator />
@@ -49,7 +45,7 @@
             </q-tab-panel>
 
             <q-tab-panel name="images">
-              <div class="text-h6 text-center">Coming Soon</div>
+              <Imagetabs></Imagetabs>
             </q-tab-panel>
           </q-tab-panels>
         </q-card>
@@ -58,10 +54,10 @@
   </q-layout>
 </template>
 <script>
-import Axios from "app/node_modules/axios";
-import backgroundDisplay from "../components/admin/adminBG";
 import { mapGetters } from "vuex";
+import backgroundDisplay from "../components/admin/adminBG";
 import Usertabs from "../components/admin/user_tabs.vue";
+import Imagetabs from "../components/admin/image_tabs.vue";
 export default {
   computed: {
     ...mapGetters({
@@ -72,6 +68,7 @@ export default {
   components: {
     backgroundDisplay,
     Usertabs,
+    Imagetabs,
   },
   data() {
     return {
@@ -80,6 +77,13 @@ export default {
   },
   async mounted() {
     // await this.checkStatusAdmin();
+  },
+  methods: {
+    async checkStatusAdmin() {
+      if (this.user_email != "doublepor@gmail.com") {
+        this.$router.push("/");
+      }
+    },
   },
 };
 </script>

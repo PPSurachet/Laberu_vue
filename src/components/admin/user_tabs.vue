@@ -3,17 +3,17 @@
     <div class="col bg-white rounded-borders">
       <div class="q-mr-md">
         <q-table
+          title="User"
           style="box-shadow: none"
-          :selected-rows-label="getTaskSuccessByUser"
           selection="single"
           :selected.sync="selected"
+          :selected-rows-label="getTaskSuccessByUser"
           :grid="$q.screen.md"
           :dense="$q.screen.lt.md"
-          title="User"
           :data="user"
           :columns="columns"
-          row-key="name"
           :filter="filter"
+          row-key="name"
         >
           <template v-slot:top-right>
             <q-input dense debounce="300" v-model="filter" placeholder="Search">
