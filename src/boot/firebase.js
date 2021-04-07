@@ -12,9 +12,6 @@ export default ({ Vue }) => {
         measurementId: "G-055DEPHQ9W"
     }
     Firebase.initializeApp(FirebaseConfig);
-
-    console.log("Firebase initialized");
-
     Vue.prototype.$firebase = Firebase;
     Vue.prototype.$auth = Firebase.auth();
 }
