@@ -106,7 +106,7 @@
               <div class="row">
                 <div class="col paddingCol">
                   <div class="totalMoneyText">
-                    เงินสุทธิ : {{ this.userData.countSuccess * 0.75 }} ฿
+                    เงินสุทธิ : {{ this.userData.countSuccess }} ฿
                   </div>
                 </div>
               </div>
@@ -133,7 +133,7 @@ export default {
   data() {
     return {
       config: {
-        url: "https://laberu-uag2fgef3q-as.a.run.app",
+        url: "https://laberu-ptrmd2zvzq-as.a.run.app",
         // url: "http://localhost:8080",
       },
       userData: {

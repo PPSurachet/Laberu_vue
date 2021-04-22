@@ -177,7 +177,7 @@ export default {
     return {
       tags: [],
       config: {
-        url: "https://laberu-uag2fgef3q-as.a.run.app",
+        url: "https://laberu-ptrmd2zvzq-as.a.run.app",
         // url: "http://localhost:8080",
         project_name: null,
         baseImageUrl: null,
@@ -220,9 +220,9 @@ export default {
     this.logout();
   },
   async mounted() {
-    // await this.configProject();
-    // await this.setUserData();
-    // await this.initState();
+    await this.configProject();
+    await this.setUserData();
+    await this.initState();
   },
   methods: {
     async initState() {

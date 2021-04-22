@@ -45,7 +45,7 @@
           />
         </div>
       </div>
-      <q-scroll-area style="height: 450px" v-if="images != null">
+      <q-scroll-area style="height: 350px" v-if="images != null">
         <div v-for="(image, index) in images" :key="image._id">
           <q-item clickable v-ripple @click="onDialog(index, null)">
             <q-item-section avatar>
@@ -87,7 +87,7 @@ export default {
         image: null,
       },
       config: {
-        url: "https://laberu-uag2fgef3q-as.a.run.app",
+        url: "https://laberu-ptrmd2zvzq-as.a.run.app",
         // url: "http://localhost:8080",
         project_name: null,
         baseImageUrl: null,

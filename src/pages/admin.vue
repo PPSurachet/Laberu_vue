@@ -27,8 +27,8 @@
             align="justify"
             narrow-indicator
           >
-            <q-tab class="text-orange" name="users" label="User" />
-            <q-tab class="text-teal text-h3" name="images" label="Image" />
+            <q-tab class="text-violet" name="users" label="User" />
+            <q-tab class="text-violet" name="images" label="Image" />
           </q-tabs>
 
           <q-separator />
@@ -76,7 +76,7 @@ export default {
     };
   },
   async mounted() {
-    // await this.checkStatusAdmin();
+    await this.checkStatusAdmin();
   },
   methods: {
     async checkStatusAdmin() {
