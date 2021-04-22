@@ -23,7 +23,8 @@
           <div
             v-model="tabs"
             vertical
-            class="text-teal q-mr-lg ml-lg"
+            class="q-mr-lg ml-lg"
+            style="color: #666877"
             v-for="(image, index) in images"
             :key="index"
           >
@@ -36,7 +37,10 @@
               <q-item-section avatar>
                 <q-icon name="fas fa-image" />
               </q-item-section>
-              <q-item-section>{{ image.shortcode + ".jpg" }}</q-item-section>
+              <q-item-section>{{ image.shortcode }}</q-item-section>
+              <q-item-section avatar side v-if="image.result.length == 5">
+                <q-icon name="fas fa-check-circle" color="blue" />
+              </q-item-section>
             </q-item>
             <q-separator />
           </div>
@@ -57,10 +61,10 @@
               />
             </div>
             <div class="q-ml-md">
-              <p style="color: green">Shortcode : {{ imageInfo.shortcode }}</p>
-              <p style="color: blue">Descriptions</p>
+              <p style="color: red">Shortcode : {{ imageInfo.shortcode }}</p>
+              <p style="color: #191970">Descriptions</p>
               <div v-for="(item, index) in imageInfo.descriptions">
-                <p style="color: blue">
+                <p style="color: #191970">
                   {{ index + 1 }} : {{ item.description }}
                 </p>
               </div>
@@ -97,8 +101,8 @@ export default {
         opacity: 0.2,
       },
       config: {
-        // url: "https://laberu-uag2fgef3q-as.a.run.app",
-        url: "http://localhost:8080",
+        url: "https://laberu-ptrmd2zvzq-as.a.run.app",
+        // url: "http://localhost:8080",
         project_name: null,
         baseImageUrl: null,
         labelingCount: null,

@@ -134,7 +134,7 @@ export default {
   data() {
     return {
       config: {
-        url: "https://laberu-uag2fgef3q-as.a.run.app",
+        url: "https://laberu-ptrmd2zvzq-as.a.run.app",
         // url: "http://localhost:8080",
       },
       fname: null,
